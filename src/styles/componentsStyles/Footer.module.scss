@@ -1,0 +1,113 @@
+.wrapper {
+  position: absolute;
+  height: 225px;
+  // width: 1440px;
+  bottom: 0;
+  left: 0;
+  border-top: 2px solid #6b3e3d;
+  padding: 30px 371px 0;
+  display: flex;
+  //   align-items: flex-end;
+  .content {
+    width: 699px;
+    height: 173px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // background-color: red;
+    .box {
+      display: flex;
+      width: 100%;
+    }
+    :nth-child(1) {
+      height: 30px;
+      justify-content: space-between;
+      .title {
+        font-family: "Quicksand";
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 30px;
+        letter-spacing: 0em;
+        color: #6b3e3d;
+      }
+    }
+    :nth-child(2) {
+      flex-direction: column;
+      height: 103px;
+      justify-content: space-between;
+      align-items: center;
+      .app {
+        width: 338px;
+        height: 59px;
+        // background-color: red;
+        display: flex;
+        .child {
+          box-sizing: border-box;
+          width: 161px !important;
+          height: 59px;
+          padding: 12px;
+          border-radius: 8px;
+          display: flex;
+          border: 1px solid #6b3e3d;
+          justify-content: space-between;
+          align-items: center;
+          flex-direction: row;
+
+          //   background-color: red;
+          .text_box {
+            width: 93px;
+            height: 35px;
+            display: flex;
+            flex-direction: column;
+            // background-color: red;
+            :nth-child(1) {
+              font-family: Quicksand;
+              font-size: 12px;
+              font-weight: 600;
+              line-height: 15px;
+              letter-spacing: 0em;
+              text-align: left;
+            }
+            :nth-child(2) {
+              //styleName: Body 1 Bold;
+              font-family: Quicksand;
+              font-size: 16px;
+              font-weight: 700;
+              line-height: 20px;
+              letter-spacing: 0em;
+              text-align: left;
+            }
+          }
+        }
+      }
+      .license {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        height: 20px;
+
+        font-family: Quicksand;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: 0em;
+        color: #6b3e3d;
+        gap: 2px;
+        span {
+          height: 20px;
+          svg {
+            height: 20px !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1260px) {
+  .wrapper {
+    padding: 30px calc(50vw - 699px / 2) 0;
+    
+  }
+}
