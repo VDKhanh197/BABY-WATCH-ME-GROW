@@ -1,0 +1,457 @@
+@import url("https://fonts.cdnfonts.com/css/lilita-one");
+
+@import url("https://fonts.cdnfonts.com/css/quicksand");
+@import url("https://fonts.cdnfonts.com/css/inter");
+.wrapper {
+    height: 100vh;
+    width: 100vw;
+    max-width: 1439px;
+    position: relative;
+    margin: 0 atuo;
+    background-color: #fff2e2;  
+
+    .image_head {
+        position: absolute;
+        left:348px;
+        z-index: 100;
+        
+    }
+    .body {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #fff2e2;  
+
+        .banner {
+            width: 1022px;
+            height: 300px;
+            background-color: #909090;
+            margin: 0 auto;
+            margin-top: 24px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 24px;
+            border-radius: 8px;
+            position: relative;
+            z-index: 200;
+
+            .avatar {
+                width: 160px;
+                height: 160px;
+                border-radius: 50%;
+                background-color: #343434;
+                overflow: hidden;
+                & label {
+                    width: 160px;
+                    height: 160px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+
+                    & img {
+                        width: 36px;
+                        height: 36px;
+                    }
+
+                    .imgAvt {
+                        width: 100%;
+                        height: 100%;
+                    }
+    
+                    & span {
+                        display: block;
+                        font-family: Quicksand;
+                        font-size: 16px;
+                        font-weight: 500;
+                        line-height: 20px;
+                        margin-top: 10px;
+
+                    }
+                }
+
+                & label:hover {
+                    cursor: pointer;
+                }
+
+            }
+
+            .background {
+                padding: 4px;
+                border-radius: 8px;
+                background-color: #00000080;
+                width: fit-content;
+                height: fit-content;
+                & label {
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row;
+                    & img {
+                        display: block;
+                        width: 24px;
+                        height: 24px;
+                    }
+
+                    & span {
+                        display: block;
+                        font-family: Quicksand;
+                        font-size: 16px;
+                        font-weight: 700;
+                        line-height: 20px;
+                        margin-left: 10px;
+                        color: #fff;
+                    }
+                }
+                & label:hover {
+                    cursor: pointer;
+                }
+            }
+
+        }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            width: 1022px;
+            margin: 0 auto;
+            padding: 24px;
+            border-bottom: 1px solid #ccc;
+            position: relative;
+            z-index: 300;
+            .line1 {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                & strong {
+                    font-family: Quicksand;
+                    font-size: 24px;
+                    font-weight: 900;
+                    line-height: 30px;
+                }
+
+                .btn-edit {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    & span {
+                        width: 165px;
+                        height: 40px;
+                        padding: 10px 40px;
+                        border-radius: 16px;
+                        background-color: #fff;
+                        color: #000;
+                        font-family: Quicksand;
+                        font-size: 16px;
+                        font-weight: 700;
+                        line-height: 20px;
+
+                    }
+
+                    & span:hover, & img:hover{
+                        cursor: pointer;
+                        opacity: 0.8;
+                    }
+
+                     
+                }
+
+            
+            }
+
+            .line2 {
+                margin-top: 12px;
+                display: flex;
+                gap: 48px;
+                & span {
+                    font-family: Quicksand;
+                    font-size: 20px;
+                    font-weight: 500;
+                    line-height: 25px;
+                    & strong {
+                        font-family: Quicksand;
+                        font-size: 20px;
+                        font-weight: 700;
+                        line-height: 25px;
+
+                    }
+
+                }
+            }
+        }
+
+        .content {
+            width: 1022px;
+            margin: 0 auto;
+            margin-top: 24px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 48px;
+            z-index: 500;
+            position: relative;
+
+            .left {
+                flex: 5;
+                overflow: hidden;
+                & h1 {
+                    font-family: Quicksand;
+                    font-size: 24px;
+                    font-weight: 900;
+                    line-height: 30px;
+                    text-transform: uppercase;  
+
+                }
+                .event {
+                    margin-top: 24px;
+                    width: 100%;
+                    height: 418px;
+                    background: url("../../assets/images/bg-event.png") center center / cover no-repeat ;
+                    border-radius: 12px;
+                    display: grid;
+                    grid-template-columns: repeat(4,1fr);
+                    padding: 24px;
+                    gap: 12px;
+                    overflow: scroll;
+                    place-items: center;
+                    &::-webkit-scrollbar {
+                        width: 0px;
+                        background: transparent; // Make the scrollbar transparent
+                    }
+                    .vid {
+                        width: 152px;
+                        height: 304px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border-radius: 12px;
+                        border: 4px solid #000;
+                        overflow: hidden;
+                        & video {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                    }
+                    
+                }
+            }
+            .right {
+                flex: 2;
+                & h1 {
+                    font-family: Quicksand;
+                    font-size: 24px;
+                    font-weight: 900;
+                    line-height: 30px;
+                    text-transform: uppercase;  
+
+                }
+                .list-cmt {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    margin-top: 24px;
+                    height: 418px;
+                    overflow: scroll;
+                    &::-webkit-scrollbar {
+                        width: 0px;
+                        background: transparent; // Make the scrollbar transparent
+                    }
+                    .item {
+                        display: flex;
+                        flex-direction: row;
+                        gap: 4px;
+                        & img {
+                            width: 28px;
+                            height: 28px;
+                            border-radius: 50%;
+                        }
+                        .mess {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 4px;
+                            & strong {
+                                display: block;
+                                font-family: Quicksand;
+                                font-size: 14px;
+                                font-weight: 700;
+                                line-height: 17.5px;
+
+                            }
+                            & span {
+                                display: block;
+                                font-family: Quicksand;
+                                font-size: 14px;
+                                font-weight: 500;
+                                line-height: 17.5px;
+                                text-align: left;
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    .image_bottom {
+        position: relative;
+        width: 100%;
+        height: 0;
+        top: 0;
+        align-content: end;  
+        background-color: #fff2e2;  
+
+
+        :nth-child(1) {
+            bottom: 0px;
+          }
+        :nth-child(2) {
+            bottom: 0px;
+        
+            right: 0;
+        }
+        :nth-child(3) {
+            width: 695.3px;
+            height: 297.31px;
+            bottom: calc(1024px - 756px - 297.31px);
+            left: -18px;
+        }
+        :nth-child(4) {
+            left: 20px;
+            bottom: calc(1024px - 296px - 694px);
+        }
+        :nth-child(5) {
+            width: 345px;
+            height: 447px;
+            bottom: calc(1024px - 561px - 447px);
+            left: 1043px;
+        }
+        :nth-child(6) {
+            bottom: 0;
+            right: 0;
+        }
+        svg {
+            position: absolute;
+        }
+    }
+
+    
+}
+
+.edit {
+    position: fixed;
+    top:0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 9999;
+    background-color: rgba(#ccc,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & form {
+        width: 672px;
+        height: 303px;
+        padding: 28px 28px 40px 28px;
+        border-radius: 8px;
+        background-color: #323232;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        .title {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            & h1 {
+                font-family: Quicksand;
+                font-size: 28px;
+                font-weight: 700;
+                line-height: 35px;
+                color: #fff;
+
+            }
+
+            & img {
+                width: 32px;
+                height: 32px;
+                position: absolute;
+                right: 0;
+            }
+        }
+
+        .form {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            & label {
+                width: 160px;
+                height: 160px;
+                border-radius: 50%;
+                overflow: hidden;
+                & img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+            .form-content {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                & input {
+                    width: 416px;
+                    height: 52px;
+                    padding: 16px;
+                    border-radius: 12px;
+                    outline: none;
+                    font-family: Quicksand;
+                    font-size: 16px;
+                    font-weight: 500;
+                    line-height: 20px;
+                    background-color: rgba(#fff,0.1);
+                    color: #fff;
+
+                }
+                .btn {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    & span , & label{
+                        width: 200px;
+                        height: 62px;
+                        padding: 16px;
+                        border-radius: 8px;
+                        background-color: #442F4D;
+                        font-family: Quicksand;
+                        font-size: 24px;
+                        font-weight: 600;
+                        line-height: 30px;
+                        color: #fff;
+                        text-align: center;
+
+                    }
+                    
+                    & span:hover, & label:hover{
+                        opacity: .8;
+                        cursor: pointer;
+                    }
+
+                    & label {
+                        background-color: #fff;
+                        color: #000;
+                    }
+                }
+            }
+        }
+
+    }
+}

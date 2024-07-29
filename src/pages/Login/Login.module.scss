@@ -93,6 +93,7 @@
       height: 15.49px;
       align-items: center;
       gap: 2px !important;
+      flex: 1;
 
       input {
         height: 9.96px;
@@ -103,6 +104,21 @@
       .item_title {
         font-size: 9px;
         line-height: 15.49px;
+        flex: 1;
+
+        .note {
+          display: flex;
+          justify-content: space-between;
+          :nth-child(2){
+            color: #0f3dde;
+            &:hover {
+              text-decoration: underline;
+              cursor: pointer;
+
+            }
+
+          }
+        }
       }
     }
     input {
@@ -226,12 +242,11 @@
   }
 }
 .last_line {
-  flex: 1;
+  // flex: 1;
+  margin-top: 24px;
   display: flex;
   align-items: center;
   flex-direction: column;
-
-  justify-content: flex-end;
   line-height: 100%;
   font-size: 14px;
   span {

@@ -10,8 +10,7 @@
 
   display: flex;
   justify-content: flex-end;
-  z-index: 1;
-  overflow: hidden;
+  z-index: 9999;
   .logo {
     position: absolute;
     left: 0;

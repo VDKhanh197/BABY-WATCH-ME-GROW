@@ -1,0 +1,40 @@
+@import url("https://fonts.cdnfonts.com/css/lilita-one");
+
+@import url("https://fonts.cdnfonts.com/css/quicksand");
+@import url("https://fonts.cdnfonts.com/css/inter");
+
+.menu {
+    position: absolute;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #3d115f;
+    top: 108px;
+    right: 14px;
+    z-index: 300;
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        & span {
+            display: block;
+            color: #fff;
+            font-family: Roboto;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 28.13px;
+            text-align: center;
+
+        }
+    }
+}
+
+.menu::before {
+    position: absolute;
+    background-color: #3d115f;
+    content: "";
+    width: 14px;
+    height: 14px;
+    top: -7px;
+    right: 10px;
+    transform: rotate(45deg);
+}

@@ -20,10 +20,15 @@ import {
 } from "../../services/image";
 import Header from "../../components/Header";
 
+interface ImageHistory {
+  url: string;
+}
+
 const cx = classNames.bind(styles);
 function SwapVideo() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [picOne, setPicOne] = useState("");
+  const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
 
   const [link1, setLink1] = useState<any>("");
 
@@ -48,20 +53,28 @@ function SwapVideo() {
         formData.append("src_img", e.target.files[0]);
         let res1 = await uploadImageSwap(formData, 241, "nu");
         setLink1(res1);
-        setPicOne(URL.createObjectURL(e.target.files[0]));
+        const imgURL = URL.createObjectURL(e.target.files[0]).toString();
+        setPicOne(imgURL);
+        const newImage: ImageHistory = {
+          url: imgURL,
+        };
+        setImageHistory([...imageHistory, newImage]);
       }
     }
   };
-
   const handleSwapFace = async () => {
+    setLoading(true);
+    setLinkSwapVideo("");
     //   console.log("Click Swap");
     if (params.id !== undefined) {
       const res = await swapVideoVersion2(link1, +params.id);
       console.log(res);
       if (res) {
         setLinkSwapVideo(res.sukien_video.link_vid_da_swap);
+        setPicOne("");
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -81,22 +94,44 @@ function SwapVideo() {
               onClick={handleSelectFile}
             >
               {/* <SwapBox_1 /> */}
-
               <div className={cx("button_swap")}>
                 {picOne != "" && <img className={cx("preview")} src={picOne} />}
 
                 <input type="file" onChange={(e) => handleInputImg(e, 1)} />
               </div>
-            </div>
 
-            <div className={cx("action")} onClick={handleSwapFace}>
-              <span>Start</span>
-            </div>
-            {linkSwapVideo !== "" && (
-              <div className={cx("result")}>
-                <video controls src={linkSwapVideo} />
+              <div className={cx("action")} onClick={handleSwapFace}>
+                <span>Start</span>
               </div>
-            )}
+              <div className={cx("history")}>
+                {imageHistory &&
+                  imageHistory.map((item, index) => {
+                    console.log(item);
+                    return (
+                      <div key={index}>
+                        <img src={item.url} alt="" />
+                      </div>
+                    );
+                  })}
+              </div>
+
+              {/*<div className={cx("history")}>*/}
+              {/*  <img src={picUploaded} alt=""/>*/}
+              {/*</div>*/}
+            </div>
+            <div className={cx("box_result")}>
+              <div className={cx("result")}>
+                {linkSwapVideo ? (
+                  <video controls src={linkSwapVideo} />
+                ) : loading ? (
+                  <div className={cx("preloader")}>
+                    <div className={cx("loading")}></div>
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+            </div>
           </div>
         </div>
         <div className={cx("image_bottom")}>

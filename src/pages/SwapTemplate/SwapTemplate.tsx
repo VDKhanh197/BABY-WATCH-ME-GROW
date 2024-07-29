@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { videoTemplate } from "../../services/image";
 import ReactPaginate from "react-paginate";
 import Header from "../../components/Header";
+import axios from "axios";
 const cx = classNames.bind(styles);
 
 function SwapTemplate() {
@@ -24,9 +25,8 @@ function SwapTemplate() {
   };
   useEffect(() => {
     async function fectchData() {
-      const res = await videoTemplate();
-
-      setData(res.list_sukien_video);
+      const res = await axios.get('https://api.watchmegrow.online/get/list_video/all_video_baby_mom');
+      setData(res.data.list_sukien_video);
     }
 
     fectchData();
@@ -49,7 +49,7 @@ function SwapTemplate() {
         <div className={cx("main")}>
           {pageData.length > 0 &&
             pageData.map((item, index) => (
-              <TemplateCard key={Math.random()} index={index} data={item} />
+              <TemplateCard key={index} index={index} data={item} />
             ))}
         </div>
         <div>

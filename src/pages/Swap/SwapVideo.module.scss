@@ -59,100 +59,138 @@
   width: 100%;
   display: flex;
   flex: 1;
-
-  flex-direction: column;
   align-items: center;
   z-index: 1;
   justify-content: center;
   // padding-top: calc(283px - 148px);
-  .action {
-    position: absolute;
-    height: 37px;
-    width: 154px;
-    border-radius: 36px;
-    background-color: #3d115f;
-    box-shadow: 0px 4px 4px 0px #00000040;
-    cursor: pointer;
-    top: 597px;
-    left: 581px;
-    padding: 6px 52px 6px 52px;
+  height: fit-content;
 
-    gap: 10px;
+  .body_wrapper {
+    z-index: 2;
     display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-.body_wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  // justify-content: space-between;
-
-  height: 100%;
-  width: 100%;
-  .navibar {
-    width: 100%;
-    height: 40px;
-    // background-color: red;
-    display: flex;
-    .switch {
-      height: 40px;
-      background-color: black;
-      border-radius: 100px;
-      width: 152px;
-      margin: 20px;
+    flex-direction: row;
+    position: relative;
+    .swap_box {
       display: flex;
+      width: 795px;
+      flex-direction: column;
+      gap: 46px;
       align-items: center;
       justify-content: center;
-    }
-  }
-  .swap_box {
-    position: absolute;
-    display: flex;
-
-    .button_swap {
-      position: absolute;
-      border: 4px solid #26a5fc;
-      width: 79.14px;
-      height: 79.04px;
-      top: 66.98px;
-      left: 69.75px;
-      background-color: #d9d9d9;
-      border-radius: 50%;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      input {
-        width: 79.14px;
-        height: 79.04px;
+      .button_swap {
+        //position: absolute;
+        border: 4px solid #26a5fc;
+        width: 160px;
+        height: 160px;
+        //top: 66.98px;
+        //left: 69.75px;
+        //background-color: #d9d9d9;
+        background: url('../../assets/images/upload-Image.png') center center / cover no-repeat;
+        //object-fit: contain;
         border-radius: 50%;
         overflow: hidden;
-        // background-color: red;
-        opacity: 0;
-        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .preview {
+          //position: absolute;
+          width: 160px;
+          height: auto;
+        }
+
+        & input {
+          width: 160px;
+          height: 160px;
+          border-radius: 50%;
+          overflow: hidden;
+          // background-color: red;
+          opacity: 0;
+          cursor: pointer;
+        }
+
+
+
       }
-      .preview {
-        position: absolute;
-        width: 79.14px;
-        height: 79.04px;
+      .action {
+        //position: absolute;
+        width: 267px;
+        height: 62px;
+        border-radius: 8px;
+        background: linear-gradient(to right, #DA6251, #4F67C4);
+        box-shadow: 0px 4px 4px 0px #00000040;
+        cursor: pointer;
+        //top: 597px;
+        //left: 581px;
+        padding: 6px 52px 6px 52px;
+        //gap: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        & span {
+          font-family: Quicksand;
+          font-size: 24px;
+          font-weight: 600;
+          line-height: 30px;
+
+        }
+      }
+
+      .history {
+        width: 100%;
+        padding: 0 46px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+        flex-wrap: wrap;
+        & img {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+        }
       }
     }
-  }
-  .swap_1 {
-    margin-top: calc(333px - 148px);
-    left: 415px;
-  }
-  .swap_2 {
-    margin-top: calc(323px - 148px);
-    left: 696px;
-    .button_swap {
-      top: 99.37px;
-      left: 96.87px;
+    .box_result {
+      min-width: 50%;
+      .result{
+        width: 336px;
+        height: 653px;
+        border-radius: 30px;
+        border: 8px solid #fff;
+        overflow: hidden;
+        .preloader {
+          opacity: 0.6;
+          width: 100%;
+          height: 100%;
+          background-color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          transition: 0.5s;
+            .loading {
+              width: 100px;
+              height: 100px;
+              border: 8px solid #101dfd;
+              border-top-color: transparent;
+              border-bottom-color: transparent;
+              border-radius: 50%;
+              animation: 1s reloader infinite linear;
+          }
+        }
+        & video {
+          width: 336px;
+          height: 653px;
+          object-fit: cover;
+        }
+      }
+
     }
   }
 }
+
 
 .image_bottom {
   position: relative;
@@ -232,7 +270,7 @@
     .swap_button {
       width: 100%;
       height: 62px;
-      padding: 16px, 24px, 16px, 24px;
+      padding: 16px 24px 16px 24px;
       border-radius: 8px;
       display: flex;
       align-items: center;
@@ -267,12 +305,12 @@
       height: 160px;
       border-radius: 50%;
 
-      background-color: linear-gradient(0deg, #26a5fc, #26a5fc),
-        linear-gradient(
-          0deg,
-          rgba(255, 255, 255, 0.5),
-          rgba(255, 255, 255, 0.5)
-        );
+      //background-color: linear-gradient(0deg, #26a5fc, #26a5fc),
+      //  linear-gradient(
+      //    0deg,
+      //    rgba(255, 255, 255, 0.5),
+      //    rgba(255, 255, 255, 0.5)
+      //  );
       opacity: 0;
     }
   }
@@ -317,34 +355,9 @@
     }
   }
 }
-.result {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 300px;
-  top: calc( 186px);
-  left: calc(250px + 415px);
-  border-radius: 16px;
-  position: absolute;
-  object-fit: contain;
-  background-color: black;
 
-  video,
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 16px;
-    overflow: hidden;
 
-    // background-color: red;
-  }
-  img {
-    object-fit: cover;
-    box-shadow: 1px 1px 5px rgb(91, 91, 91);
-  }
-}
+
 @media (max-width:1260px){
   .result{
     top: calc(186px);
@@ -357,5 +370,11 @@
   .action{
     left: 400px !important;
 
+  }
+}
+
+@keyframes reloader {
+  to {
+    transform: rotate(360deg);
   }
 }

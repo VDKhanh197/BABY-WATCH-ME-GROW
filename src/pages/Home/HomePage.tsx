@@ -6,12 +6,16 @@ import styles from "./Home.module.scss";
 import classNames from "classnames/bind";
 import Header from "../../components/Header";
 import { RoundArrow, RoundArrow_2, RoundArrow_3 } from "../../assets/icon";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import images from "../../assets/images";
 const cx = classNames.bind(styles);
 
 const HomePage = () => {
   const [checkUser, setCheckUser] = useState(false);
   const [user, setUser] = useState({ id_user: "", link_avatar: "" });
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     setUser(JSON.parse(String(localStorage.getItem("user"))));
     if (localStorage.getItem("user")) setCheckUser(true);
@@ -44,12 +48,18 @@ const HomePage = () => {
           </div>
           <div className={cx("right")}>
             <div className={cx("baby")}>
-              <div className={cx("image")}></div>
+              <div className={cx("image")}>
+                <img src={images.imgAt3} alt="" />
+              </div>
             </div>
             <div className={cx("parent")}>
-              <div className={cx("father")}></div>
+              <div className={cx("father")}>
+                <img src={images.dad} alt="" />
+              </div>
 
-              <div className={cx("mother")}></div>
+              <div className={cx("mother")}>
+                <img src={images.mom} alt="" />
+              </div>
               <div className={cx("arrow")}>
                 <RoundArrow />
               </div>
@@ -58,7 +68,9 @@ const HomePage = () => {
         </div>
         <div className={cx("part_2")}>
           <div className={cx("left")}>
-            <div className={cx("pic")}></div>
+            <div className={cx("pic")}>
+              <img src={images.machineImage} alt="" />
+            </div>
             <div className={cx("title")}>
               <div className={cx("box")}>
                 <span>AI</span>
@@ -99,8 +111,12 @@ const HomePage = () => {
               <div className={cx("arrow")}>
                 <RoundArrow_3 />
               </div>
-              <div className={cx("pic")}></div>
-              <div className={cx("pic")}></div>
+              <div className={cx("pic")}>
+                <img src={images.imgBf1} alt="" />
+              </div>
+              <div className={cx("pic")}>
+                <img src={images.imgBf2} alt="" />
+              </div>
             </div>
             <div className={cx("right")}>
               <div className={cx("text")}>
@@ -112,19 +128,36 @@ const HomePage = () => {
                   swapping tool offers unparalleled realism.
                 </span>
               </div>
-              <div className={cx("button")}>
+              <div
+                className={cx("button")}
+                onClick={() => {
+                  navigate("newborn");
+                }}
+              >
                 <span>Try News Born</span>
               </div>
             </div>
           </div>
           <div className={cx("body")}>
             <div className={cx("box_wrapper")}>
-              <div className={cx("box")}></div>
-              <div className={cx("box")}></div>
-              <div className={cx("box")}></div>
-              <div className={cx("box")}></div>
-              <div className={cx("box")}></div>
-              <div className={cx("box")}></div>
+              <div className={cx("box")}>
+                <img src={images.imgAt1} alt="" />
+              </div>
+              <div className={cx("box")}>
+                <img src={images.imgAt2} alt="" />
+              </div>
+              <div className={cx("box")}>
+                <img src={images.imgAt3} alt="" />
+              </div>
+              <div className={cx("box")}>
+                <img src={images.imgAt4} alt="" />
+              </div>
+              <div className={cx("box")}>
+                <img src={images.imgAt5} alt="" />
+              </div>
+              <div className={cx("box")}>
+                <img src={images.imgAt6} alt="" />
+              </div>
             </div>
           </div>
         </div>

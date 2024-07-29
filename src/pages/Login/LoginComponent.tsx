@@ -1,10 +1,8 @@
 import { useState } from "react";
 import styles from "./Login.module.scss";
 import classNames from "classnames/bind";
-import { signin, signup } from "../../services/auth";
+import { resetPassword, signin, signup } from "../../services/auth";
 import { useNavigate } from "react-router";
-
-
 
 const cx = classNames.bind(styles);
 function LoginComponent() {
@@ -17,7 +15,6 @@ function LoginComponent() {
   const [ipAddress, setIpAddress] = useState("");
   const [deviceRegister, setDeviceRegister] = useState("");
   const navi = useNavigate();
-  
 
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value.trim());
@@ -42,20 +39,21 @@ function LoginComponent() {
           try {
             const response: any = await signin(formData);
             const { message } = response;
+            // console.log(response);
 
             if (message === "Invalid Password!!") {
               alert("Fail Try Again!");
+              // localStorage.clear();
             } else {
               alert("Login Success");
               const account = JSON.stringify(response);
               localStorage.setItem("accessToken", response.token);
               localStorage.setItem("user", account);
-              navi(`/profile/edit/${response.id_user}`);
+              navi(`/profile/${response.id_user}`);
             }
           } catch (error) {
             console.log(error);
             alert("Login Fail");
-
           }
         } else {
           console.log("Wrong email");
@@ -88,6 +86,33 @@ function LoginComponent() {
 
               setPage(1);
             }
+          } catch (e) {
+            console.log("Something wrong!");
+          }
+        } else {
+          console.log("Wrong email");
+        }
+      }
+    }
+    if (page === 3) {
+      if (email === "") {
+        console.log("Empty");
+      } else {
+        if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+          const newName = email.split("@");
+          const formData = new FormData();
+          formData.append("email", email);
+          formData.append("ip_register", ipAddress);
+          formData.append("device_register", deviceRegister);
+          formData.append(
+            "link_avatar",
+            `https://a0.anyrgb.com/pngimg/1236/14/no-facial-features-no-avatar-no-eyes-expressionless-avatar-icon-delayering-avatar-user-avatar-men-head-portrait-thumbnail.png?fbclid=IwAR3IUCAOlBSThvKijmWXmNuZk-6oEe1q6k-oGQXGr_zd1zWixMIUfAaAyfw`
+          );
+          try {
+            const response: any = await resetPassword(formData);
+            const { message } = response;
+            alert(message);
+            setPage(1);
           } catch (e) {
             console.log("Something wrong!");
           }
@@ -149,26 +174,40 @@ function LoginComponent() {
                   onKeyDown={(e) => handleKeyDown(e)}
                 />
               </div>
-              <div className={cx("item_body", "child_2")}>
-                <div className={cx("title")}>
-                  <div className={cx("item_pass", passToggle && "unable")}>
-                    Password
+              {page !== 3 && (
+                <div className={cx("item_body", "child_2")}>
+                  <div className={cx("title")}>
+                    <div className={cx("item_pass", passToggle && "unable")}>
+                      Password
+                    </div>
                   </div>
-                </div>
 
-                <input
-                  type="password"
-                  placeholder="Password"
-                  onChange={(e) => handleChangePassword(e)}
-                  onKeyDown={(e) => handleKeyDown(e)}
-                />
-              </div>
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => handleChangePassword(e)}
+                    onKeyDown={(e) => handleKeyDown(e)}
+                  />
+                </div>
+              )}
               <div className={cx("item_body", "child_3")}>
                 <div className={cx("title", "check_box")}>
-                  <input type="checkbox" />
+                  <input type="checkbox" hidden={page === 3} />
                   <div className={cx("item_title")}>
-                    {page === 1 && <>Remember for 30days</>}
+                    {page === 1 && (
+                      <div className={cx("note")}>
+                        <span>Remember for 30days</span>
+                        <span
+                          onClick={() => {
+                            setPage(3);
+                          }}
+                        >
+                          forgot password
+                        </span>
+                      </div>
+                    )}
                     {page === 2 && <>I agree to the terms & policy </>}
+                    {/* {page === 3 && <>Back to Login</>} */}
                   </div>
                 </div>
               </div>
@@ -180,6 +219,7 @@ function LoginComponent() {
               {" "}
               {page === 1 && <>Login</>}
               {page === 2 && <>Signup</>}
+              {page === 3 && <>Reset Password</>}
             </div>
           </div>
           <div className={cx("last_line")}>
@@ -210,6 +250,18 @@ function LoginComponent() {
                     }}
                   >
                     Sign In
+                  </span>
+                </>
+              )}
+
+              {page === 3 && (
+                <>
+                  <span
+                    onClick={() => {
+                      setPage(1);
+                    }}
+                  >
+                    Back to Login
                   </span>
                 </>
               )}

@@ -14,6 +14,27 @@ import { signin } from "../../services/auth";
 import { SwapBox_1, SwapBox_2 } from "../../assets/svg/swapbox";
 import { swapImage, swapVideo, uploadImageSwap } from "../../services/image";
 import Header from "../../components/Header";
+import images from "../../assets/images";
+import axios from "axios";
+
+
+type User = {
+  id_user: number;
+  link_avatar: string;
+  count_comment: number;
+  count_sukien: number;
+  count_view: number;
+  device_register: string;
+  email: string;
+  ip_register: string;
+  token: string;
+  user_name: string;
+};
+const user: User = JSON.parse(localStorage.getItem('user') || "");
+localStorage.setItem('userId', user.id_user.toString());
+
+const userId = localStorage.getItem('userId');
+const token = localStorage.getItem("accessToken");
 
 const cx = classNames.bind(styles);
 function Swap() {
@@ -23,6 +44,7 @@ function Swap() {
   const [link1, setLink1] = useState<any>("");
   const [link2, setLink2] = useState<any>("");
   const [linkSwapImage, setLinkSwapImage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navi = useNavigate();
 
   const handleSwitchPage = (value: boolean) => {
@@ -73,33 +95,39 @@ function Swap() {
   };
   console.log(linkSwapImage);
   const handleSwapFace = async () => {
+    setLoading(true);
     console.log("Click Swap");
-    if (switchToggle === true) {
-      console.log("Click Swap");
-
-      const res = await swapImage(link1, link2);
-      console.log(res);
-      if (res) {
-        setLinkSwapImage(res.sukien_2_image.link_da_swap);
+    try {
+      const browser = window.navigator.userAgent;
+      const ip = "unknown";
+      const { data} = await axios.get(`https://admin.funface.online/getdata/sukien/baby`,
+        {
+          params: {
+            device_them_su_kien: browser,
+            ip_them_su_kien: ip,
+            id_user: userId,
+          },
+          
+          headers: {
+            linknam: link1,
+            linknu: link2,
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      if (data){
+        setLinkSwapImage(data.sukien_baby[0].link_da_swap);
       }
-    }
-    if (switchToggle === false) {
-      console.log("Here");
-      const formData = new FormData();
-      formData.append("src_vid", link2);
-      const res = await swapVideo(link1, formData);
-      console.log(res);
-      if (res) {
-        setLinkSwapImage(res.sukien_swap_video.link_vid_da_swap);
-      }
+      
+    } catch (error) {
+      console.error(error);
     }
   };
-  // console.log(link1);
+  console.log(link1);
   console.log(link2);
- 
+
   useEffect(() => {
     setLink2(link2);
-
   }, [link2]);
   return (
     <>
@@ -113,93 +141,55 @@ function Swap() {
         </div>
         <div className={cx("body")}>
           <div className={cx("body_wrapper")}>
-            <div className={cx("navibar")}>
-              <div
-                className={cx("switch")}
-                onClick={() => handleSwitchPage(true)}
-              >
-                <span>Image</span>
+            <div className={cx("action")}>
+              <div className={cx("pic")}>
+                {picOne != "" ? (
+                  <img src={picOne} />
+                ) : (
+                  <label htmlFor="pic1" className={cx("in-pic")}></label>
+                )}
+                <input
+                  type="file"
+                  id={"pic1"}
+                  onChange={(e) => handleInputImg(e, 1)}
+                  hidden={true}
+                />
               </div>
-              <div
-                className={cx("switch")}
-                onClick={() => handleSwitchPage(false)}
-              >
-                <span>Video</span>
+              <div className={cx("swap")}>
+                <img src={images.icHeart} alt="" />
+                <span onClick={handleSwapFace}>Start</span>
+              </div>
+
+              <div className={cx("pic")}>
+                {picTwo != "" ? (
+                  <img src={picTwo} />
+                ) : (
+                  <label htmlFor="pic2" className={cx("in-pic")}></label>
+                )}
+                <input
+                  type="file"
+                  id={"pic2"}
+                  onChange={(e) => handleInputImg(e, 2)}
+                  hidden={true}
+                />
               </div>
             </div>
-            {switchToggle === true && (
-              <>
-                <div
-                  className={cx("swap_box", "swap_1")}
-                  onClick={handleSelectFile}
-                >
-                  <SwapBox_1 />
-
-                  <div className={cx("button_swap")}>
-                    {picOne != "" && (
-                      <img className={cx("preview")} src={picOne} />
-                    )}
-
-                    <input type="file" onChange={(e) => handleInputImg(e, 1)} />
-                  </div>
-                </div>
-                <div
-                  className={cx("swap_box", "swap_2")}
-                  onClick={handleSelectFile}
-                >
-                  <SwapBox_2 />
-                  <div className={cx("button_swap")}>
-                    {picTwo != "" && (
-                      <img className={cx("preview")} src={picTwo} />
-                    )}
-                    <input type="file" onChange={(e) => handleInputImg(e, 2)} />
-                  </div>
-                </div>
-                <div className={cx("action")} onClick={handleSwapFace}>
-                  <span>Start</span>
-                </div>
-                <div className={cx("result")}>
-                  <img src={linkSwapImage} />
-                </div>
-              </>
-            )}
-            {switchToggle === false && (
-              <>
-                <div className={cx("swap_video")}>
-                  <div className={cx("input_image")}>
-                    <div className={cx("input_box")}>
-                      <div className={cx("input_preview")}>
-                        {picOne !== "" && <img src={picOne} />}
-                      </div>
-                      <input
-                        type="file"
-                        onChange={(e) => handleInputImg(e, 1)}
-                      />
+            <div className={cx("box-result")}>
+              <div className={cx("result")}>
+                {loading ? (
+                  linkSwapImage === "" ? (
+                    <div className={cx("preloader")}>
+                      <div className={cx("loading")}></div>
                     </div>
-                    <div className={cx("swap_button")} onClick={handleSwapFace}>
-                      <span>Start</span>
-                    </div>
-                  </div>
-                  <div className={cx("input_video")}>
-                    <div className={cx("input_preview")}>
-                      {picTwo !== "" && (
-                        <video controls autoPlay={true} src={picTwo}>
-                          <source src={picTwo} type="video/mp4" />
-                        </video>
-                      )}
-                    </div>
-                    <input type="file" onChange={(e) => handleInputImg(e, 3)} />
-                  </div>
-                  <div className={cx("result")}>
-                    {linkSwapImage !== "" && (
-                      <video controls>
-                        <source src={linkSwapImage} type="video/mp4" />
-                      </video>
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
+                  ) : (
+                    <img src={linkSwapImage} alt="" />
+                  )
+                ) : (
+                  <></>
+                )}
+              </div>
+              <img src={images.icDownLoad} alt="" />
+            </div>
           </div>
         </div>
         <div className={cx("image_bottom")}>

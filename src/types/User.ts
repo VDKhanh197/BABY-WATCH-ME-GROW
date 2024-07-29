@@ -1,7 +1,7 @@
 export interface IUser{
     id_user?:number,
     email?:string,
-    password?:string,
+    password:string,
     user_name?:string,
     ip_register?: string,
     device_register?: string,
