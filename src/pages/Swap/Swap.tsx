@@ -69,7 +69,17 @@ function Swap() {
     setLink2("");
     setLinkSwapImage("");
   };
-  const handleDownload = () => {};
+  const downloadImage = () => {
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = linkSwapImage;
+    link.setAttribute('download', "linkSwapImage.jpg");
+
+    // Append the anchor to the DOM, click it, and then remove it
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   const handleSelectFile = () => {
     console.log("Here");
   };
@@ -206,7 +216,7 @@ function Swap() {
                   <></>
                 )}
               </div>
-              <img src={images.icDownLoad} alt="" />
+              <img src={images.icDownLoad} alt="" onClick={downloadImage}/>
             </div>
           </div>
         </div>
