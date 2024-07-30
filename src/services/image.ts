@@ -17,9 +17,23 @@ type User = {
   token: string;
   user_name: string;
 };
-const user: User = JSON.parse(localStorage.getItem('user') || "");
-localStorage.setItem('userId', user.id_user.toString());
+// const user: User = JSON.parse(localStorage.getItem('user') || "");
 
+try {
+  let user: User | null = null;
+  const userString = localStorage.getItem('user');
+  if (userString) {
+    user = JSON.parse(userString) as User;
+    localStorage.setItem('userId', user.id_user.toString());
+
+  }
+
+
+  // Process the parsed data
+} catch (error) {
+  console.error('Error parsing JSON:', error);
+  // Handle the error, e.g., display an error message to the user
+}
 const userId = localStorage.getItem('userId');
 
 export const uploadImageSwap = (formData: any, id: number, gender: string) =>

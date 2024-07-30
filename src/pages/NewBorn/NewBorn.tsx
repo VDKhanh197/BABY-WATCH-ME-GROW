@@ -29,8 +29,19 @@ type User = {
   token: string;
   user_name: string;
 };
-const user: User = JSON.parse(localStorage.getItem("user") || "");
-localStorage.setItem("userId", user.id_user.toString());
+try {
+  let user: User | null = null;
+  const userString = localStorage.getItem("user");
+  if (userString) {
+    user = JSON.parse(userString) as User;
+    localStorage.setItem("userId", user.id_user.toString());
+  }
+
+  // Process the parsed data
+} catch (error) {
+  console.error("Error parsing JSON:", error);
+  // Handle the error, e.g., display an error message to the user
+}
 
 const userId = localStorage.getItem("userId");
 const token = localStorage.getItem("accessToken");
@@ -175,7 +186,7 @@ function NewBorn() {
             </div>
             <div className={cx("action")}>
               {isLoading ? (
-                linkSwapImage && linkSwapImage?.link_anh_swap.length >0 ? (
+                linkSwapImage && linkSwapImage?.link_anh_swap.length > 0 ? (
                   <div className={cx("result")}>
                     <div className={cx("img-swap")}>
                       {linkSwapImage.link_anh_swap.map((item, index) => {
