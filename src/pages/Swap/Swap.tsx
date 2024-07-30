@@ -30,23 +30,7 @@ type User = {
   token: string;
   user_name: string;
 };
-try {
-  let user: User | null = null;
-  const userString = localStorage.getItem('user');
-  if (userString) {
-    user = JSON.parse(userString) as User;
-    localStorage.setItem('userId', user.id_user.toString());
 
-  }
-
-
-  // Process the parsed data
-} catch (error) {
-  console.error('Error parsing JSON:', error);
-  // Handle the error, e.g., display an error message to the user
-}
-const userId = localStorage.getItem('userId');
-const token = localStorage.getItem("accessToken");
 
 const cx = classNames.bind(styles);
 function Swap() {
@@ -58,6 +42,26 @@ function Swap() {
   const [linkSwapImage, setLinkSwapImage] = useState("");
   const [loading, setLoading] = useState(false);
   const navi = useNavigate();
+
+
+  try {
+    let user: User | null = null;
+    const userString = localStorage.getItem("user");
+    if (userString) {
+      user = JSON.parse(userString) as User;
+      localStorage.setItem("userId", user.id_user.toString());
+    }
+  
+    // Process the parsed data
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    // Handle the error, e.g., display an error message to the user
+  }
+  
+  const userId = localStorage.getItem('userId');
+  console.log("User Id: " + userId);
+  const token = localStorage.getItem("accessToken");
+  console.log("token: " + token);
 
   const handleSwitchPage = (value: boolean) => {
     setSwitchToggle(value);
@@ -132,7 +136,9 @@ function Swap() {
       }
       
     } catch (error) {
-      console.error(error);
+      alert("login to continue...");
+      navi("/login");
+      console.log(error);
     }
   };
   console.log(link1);
