@@ -6,6 +6,7 @@ import { videoTemplate } from "../../services/image";
 import ReactPaginate from "react-paginate";
 import Header from "../../components/Header";
 import axios from "axios";
+import { useParams } from "react-router";
 const cx = classNames.bind(styles);
 
 function SwapTemplate() {
@@ -14,6 +15,8 @@ function SwapTemplate() {
   const [pageData, setPageData] = useState([]);
 
   const [maxPage, setMaxPage] = useState(0);
+
+  const type = useParams();
 
   const handleChangePage = (selected: number) => {
     if (selected + 1 === maxPage) {

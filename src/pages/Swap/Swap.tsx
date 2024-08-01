@@ -16,6 +16,7 @@ import { swapImage, swapVideo, uploadImageSwap } from "../../services/image";
 import Header from "../../components/Header";
 import images from "../../assets/images";
 import axios from "axios";
+import { Console } from "console";
 
 
 type User = {
@@ -94,7 +95,7 @@ function Swap() {
       if (pic === 1) {
         const formData = new FormData();
         formData.append("src_img", e.target.files[0]);
-        let res1 = await uploadImageSwap(formData, 241, "nu");
+        let res1 = await uploadImageSwap(formData, "nu");
         setLink1(res1);
         setPicOne(URL.createObjectURL(e.target.files[0]));
       }
@@ -102,7 +103,7 @@ function Swap() {
       if (pic === 2) {
         const formData = new FormData();
         formData.append("src_img", e.target.files[0]);
-        let res2 = await uploadImageSwap(formData, 241, "nam");
+        let res2 = await uploadImageSwap(formData, "nam");
         setLink2(res2);
         // console.log("here");
         setPicTwo(URL.createObjectURL(e.target.files[0]));
@@ -151,8 +152,6 @@ function Swap() {
       console.log(error);
     }
   };
-  console.log(link1);
-  console.log(link2);
 
   useEffect(() => {
     setLink2(link2);

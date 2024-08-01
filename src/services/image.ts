@@ -36,8 +36,8 @@ try {
 }
 const userId = localStorage.getItem('userId');
 
-export const uploadImageSwap = (formData: any, id: number, gender: string) =>
-  apiAuth.post(`/upload-gensk/${id}?type=src_${gender}`, formData);
+export const uploadImageSwap = (formData: any, gender: string) =>
+  apiAuth.post(`/upload-gensk/${userId}?type=src_${gender}`, formData);
 
 export const swapImage = async (link1: string, link2: string) => {
   console.log(link1, link2);

@@ -5,7 +5,14 @@ import { useEffect, useState } from "react";
 import styles from "./Home.module.scss";
 import classNames from "classnames/bind";
 import Header from "../../components/Header";
-import { RoundArrow, RoundArrow_2, RoundArrow_3 } from "../../assets/icon";
+import {
+  RoundArrow,
+  RoundArrow_2,
+  RoundArrow_3,
+  IcArrow,
+  PlayIcon,
+  IcArrow2,
+} from "../../assets/icon";
 import { Link, useNavigate } from "react-router-dom";
 import images from "../../assets/images";
 const cx = classNames.bind(styles);
@@ -96,7 +103,7 @@ const HomePage = () => {
                 features. Start to use our baby maker now!
               </span>
             </div>
-            <Link to={"/template"} className={cx("button")}>
+            <Link to={"/template/tm"} className={cx("button")}>
               <span>Try Time Machine</span>
             </Link>
           </div>
@@ -172,9 +179,56 @@ const HomePage = () => {
                 tool offers unparalleled realism.
               </span>
             </div>
-            <div className={cx("button")}>
-              <span>Try News Born</span>
+            <div className={cx("button")} onClick={()=>navigate('/template/d&m')}>
+              <span>Try Dad & Mom</span>
             </div>
+          </div>
+          <div className={cx("right")}>
+            <div className={cx("arrow")}>
+              <IcArrow />
+            </div>
+            <div className={cx("img")}>
+              <div className={cx("top")}>
+                <img src={images.mom2} alt="" />
+                <img src={images.dad2} alt="" />
+              </div>
+              <div className={cx("bottom")}>
+                <PlayIcon />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={cx("part_5")}>
+          <div className={cx("content")}>
+            <div className={cx("text")}>
+              <span>
+                Get ready to be spellbound by the AI technology at FunnyFace.
+                Our cutting-edge tech guarantees flawless, natural face swaps,
+                seamlessly concealing any traces of editing. Whether aiming for
+                humour or a creative spark, our user-friendly AI face swapping
+                tool offers unparalleled realism.
+              </span>
+            </div>
+            <div className={cx("img-bf")}>
+              <img src={images.mom2} alt="" />
+              <img src={images.imgAt3} alt="" />
+            </div>
+            <div className={cx("result")}>
+              <img src={images.kam1} alt="" />
+              <img src={images.kam2} alt="" />
+              <img src={images.kam3} alt="" />
+              <img src={images.kam4} alt="" />
+              <img src={images.kam5} alt="" />
+              <img src={images.kam6} alt="" />
+            </div>
+            <div className={cx("btn")}>
+              <div className={cx("button")} onClick={()=>navigate('/momandchild')}>
+                <span>Try Kid & Mom</span>
+              </div>
+            </div>
+          </div>
+          <div className={cx("arrow")}>
+            <IcArrow2 />
           </div>
         </div>
         <Footer />

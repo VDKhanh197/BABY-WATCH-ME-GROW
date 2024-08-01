@@ -8,7 +8,9 @@ const images = {
     imgAt5: require('./imgAt5.png'),
     imgAt6: require('./imgAt6.png'),
     dad: require('./dad.png'),
+    dad2: require('./dad2.png'),
     mom: require('./mom.png'),
+    mom2: require('./mom2.png'),
     avtCmt: require('./avt-cmt.png'),
     camera: require('./camera.png'),
     setting: require('./setting-2.png'),
@@ -25,6 +27,12 @@ const images = {
     icUpload: require('./ic_upload.png'),
     machineImage: require('./machineImg.png'),
     uploadImage: require('./upload-Image.png'),
+    kam1: require('./kam1.png'),
+    kam2: require('./kam2.png'),
+    kam3: require('./kam3.png'),
+    kam4: require('./kam4.png'),
+    kam5: require('./kam5.png'),
+    kam6: require('./kam6.png'),
 }
 
 export default images;

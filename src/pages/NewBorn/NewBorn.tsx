@@ -37,11 +37,7 @@ function NewBorn() {
   const [picTwo, setPicTwo] = useState("");
   const [link1, setLink1] = useState<any>("");
   const [link2, setLink2] = useState<any>("");
-  const [linkSwapImage, setLinkSwapImage] = useState<{
-    link_anh_swap: string[];
-  }>({
-    link_anh_swap: [],
-  });
+  const [linkSwapImage, setLinkSwapImage] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navi = useNavigate();
 
@@ -83,7 +79,7 @@ function NewBorn() {
       if (pic === 1) {
         const formData = new FormData();
         formData.append("src_img", e.target.files[0]);
-        let res1 = await uploadImageSwap(formData, 241, "nu");
+        let res1 = await uploadImageSwap(formData, "nu");
         setLink1(res1);
         setPicOne(URL.createObjectURL(e.target.files[0]));
       }
@@ -92,7 +88,7 @@ function NewBorn() {
       if (pic === 2) {
         const formData = new FormData();
         formData.append("src_img", e.target.files[0]);
-        let res2 = await uploadImageSwap(formData, 241, "nam");
+        let res2 = await uploadImageSwap(formData, "nam");
         setLink2(res2);
         // console.log("here");
         setPicTwo(URL.createObjectURL(e.target.files[0]));
@@ -118,13 +114,13 @@ function NewBorn() {
       setIsLoading(true);
 
       const { data } = await axios.get(
-        `https://admin.funface.online/getdata/swap/listimage_baby_family`,
+        `https://admin.funface.online/getdata/swap/listimage_baby_newborn`,
         {
           params: {
             device_them_su_kien: browser,
             ip_them_su_kien: ip,
             id_user: userId,
-            list_folder: "baby_family1",
+            list_folder: "Newborn1",
           },
 
           headers: {
@@ -134,19 +130,18 @@ function NewBorn() {
           },
         }
       );
-      console.log(JSON.parse(data[0].body));
-      const listImgs = JSON.parse(data[0].body);
-      console.log(listImgs);
-      setLinkSwapImage(listImgs);
+      console.log(data.link_anh_swap);
+      // const listImgs = JSON.parse(data[0].body);
+      // console.log(listImgs);
+      setLinkSwapImage(data.link_anh_swap);
     } catch (error) {
-      alert("login to continue...");
-      navi('/login');
+      // alert("login to continue...");
+      // navi('/login');
       console.log(error);
     }
   };
   console.log(link1);
   console.log(link2);
-  console.log(linkSwapImage.link_anh_swap);
   return (
     <>
       <div className={cx("wrapper")}>
@@ -191,10 +186,10 @@ function NewBorn() {
             </div>
             <div className={cx("action")}>
               {isLoading ? (
-                linkSwapImage && linkSwapImage?.link_anh_swap.length > 0 ? (
+                linkSwapImage && linkSwapImage.length >0 ? (
                   <div className={cx("result")}>
                     <div className={cx("img-swap")}>
-                      {linkSwapImage.link_anh_swap.map((item, index) => {
+                      {linkSwapImage.map((item, index) => {
                         return <img src={item} alt="" key={index} />;
                       })}
                     </div>

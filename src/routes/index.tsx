@@ -7,6 +7,8 @@ import SwapTemplate from "../pages/SwapTemplate/SwapTemplate";
 import SwapVideo from "../pages/Swap/SwapVideo";
 import Profile from "../pages/Profile/Profile";
 import Setting from "../pages/Setting/Setting";
+import MomAndChild from "../pages/MomAndChild/MomAndChild";
+import MomAndDad from "../pages/MomAndDad/MomAndDad";
 
 const Routers = () => {
   // const [, setPrivateId] = useState('')
@@ -18,10 +20,13 @@ const Routers = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/swap" element={<Swap />} />
         <Route path="/newborn" element={<NewBorn />} />
-        <Route path="/template" element={<SwapTemplate />} />
+        <Route path="/template/:type" element={<SwapTemplate />} />
         <Route path="/swapVideo/:id" element={<SwapVideo />} />
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/setting/:id" element={<Setting />} />
+        <Route path="/momandchild" element={<MomAndChild />} />
+        <Route path="/momanddad/:id" element={<MomAndDad />} />
+
 
 
         {/* <Route path='signin' element={<Signin />}/>

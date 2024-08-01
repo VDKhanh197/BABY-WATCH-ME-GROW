@@ -57,7 +57,7 @@ export default function Profile() {
       reader.readAsDataURL(e.target.files[0]);
       const formData = new FormData();
       formData.append("src_img", e.target.files[0]);
-      let res1 = await uploadImageSwap(formData, 241, "nu");
+      let res1 = await uploadImageSwap(formData, "nu");
       axios
         .post(
           `https://databaseswap.mangasocial.online/changeavatar/${user.id_user}`,
