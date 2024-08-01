@@ -6,11 +6,12 @@ import { SoundIcon } from "../../assets/icon";
 
 interface TemplateCardProps {
   data: { linkgoc: string | ""; id: number };
+  type: string;
   index: number;
 }
 const cx = classNames.bind(styles);
 
-const TemplateCard: FC<TemplateCardProps> = ({ data, index }) => {
+const TemplateCard: FC<TemplateCardProps> = ({ data, type, index }) => {
   const [isSound, setIsSound] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const video1 = useRef<HTMLVideoElement>(null);
@@ -67,7 +68,7 @@ const TemplateCard: FC<TemplateCardProps> = ({ data, index }) => {
             </div>
           )} */}
         </div>
-        <Link className={cx("button")} to={`/swapVideo/${data.id}`}>
+        <Link className={cx("button")} to={type==='d&m'?`/momanddad/${data.id}`:`/swapVideo/${data.id}`}>
           Choose
         </Link>
       </div>

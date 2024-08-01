@@ -16,7 +16,8 @@ function SwapTemplate() {
 
   const [maxPage, setMaxPage] = useState(0);
 
-  const type = useParams();
+  const param = useParams();
+  const type = param?.type||"";
 
   const handleChangePage = (selected: number) => {
     if (selected + 1 === maxPage) {
@@ -52,7 +53,7 @@ function SwapTemplate() {
         <div className={cx("main")}>
           {pageData.length > 0 &&
             pageData.map((item, index) => (
-              <TemplateCard key={index} index={index} data={item} />
+              <TemplateCard key={index} index={index} type={type} data={item} />
             ))}
         </div>
         <div>
