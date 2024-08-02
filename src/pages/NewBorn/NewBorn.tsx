@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./NewBorn.module.scss";
 import classNames from "classnames/bind";
 import { CloudLeft, CloudRight } from "../../assets/icon";
@@ -30,6 +30,10 @@ type User = {
   user_name: string;
 };
 
+interface ImageHistory {
+  url: string;
+}
+
 const cx = classNames.bind(styles);
 function NewBorn() {
   const [switchToggle, setSwitchToggle] = useState(true);
@@ -39,8 +43,28 @@ function NewBorn() {
   const [link2, setLink2] = useState<any>("");
   const [linkSwapImage, setLinkSwapImage] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [pecent, setPecent] = useState(0);
+
+  const [upLoadFace, setUpLoadFace] = useState(false);
+  const [isLeftIn, setIsLeftIn] = useState(true);
+  const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
+
   const navi = useNavigate();
 
+  const handleChooseImg = async (src: string, isLeftIn: boolean) => {
+    setUpLoadFace(false);
+    const str = `/var/www/build_futurelove/${src.replace(
+      "https://futurelove.online/",
+      ""
+    )}`;
+    if (isLeftIn) {
+      setLink1(str);
+      setPicOne(src);
+    } else {
+      setLink2(str);
+      setPicTwo(src);
+    }
+  };
 
   try {
     let user: User | null = null;
@@ -49,13 +73,13 @@ function NewBorn() {
       user = JSON.parse(userString) as User;
       localStorage.setItem("userId", user.id_user.toString());
     }
-  
+
     // Process the parsed data
   } catch (error) {
     console.error("Error parsing JSON:", error);
     // Handle the error, e.g., display an error message to the user
   }
-  
+
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("accessToken");
 
@@ -72,6 +96,8 @@ function NewBorn() {
     e: React.ChangeEvent<HTMLInputElement>,
     pic: number
   ) => {
+    setUpLoadFace(false);
+
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
@@ -105,43 +131,83 @@ function NewBorn() {
     }
   };
 
+  const downloadImage = (url:string) => {
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', "linkSwapImage.jpg");
+
+    // Append the anchor to the DOM, click it, and then remove it
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  useEffect(() => {
+    axios
+    .get(
+      `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
+      {
+        headers: {
+          ContentType: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    )
+    .then((res) => {
+      console.log(res.data.image_links_video);
+      setImageHistory(res.data.image_links_video);
+    });
+
+
+    const interval = setInterval(() => {
+      setPecent((prev) => prev + 1);
+    }, 1800);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleSwapFace = async () => {
     console.log("Click Swap");
+    if (link1 && link2) {
+      setPecent(0);
+      const browser = window.navigator.userAgent;
+      const ip = "unknown";
+      try {
+        setIsLoading(true);
 
-    const browser = window.navigator.userAgent;
-    const ip = "unknown";
-    try {
-      setIsLoading(true);
+        const { data } = await axios.get(
+          `https://admin.funface.online/getdata/swap/listimage_baby_newborn`,
+          {
+            params: {
+              device_them_su_kien: browser,
+              ip_them_su_kien: ip,
+              id_user: userId,
+              list_folder: "Newborn1",
+            },
 
-      const { data } = await axios.get(
-        `https://admin.funface.online/getdata/swap/listimage_baby_newborn`,
-        {
-          params: {
-            device_them_su_kien: browser,
-            ip_them_su_kien: ip,
-            id_user: userId,
-            list_folder: "Newborn1",
-          },
-
-          headers: {
-            link1: link1,
-            link2: link2,
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(data.link_anh_swap);
-      // const listImgs = JSON.parse(data[0].body);
-      // console.log(listImgs);
-      setLinkSwapImage(data.link_anh_swap);
-    } catch (error) {
-      // alert("login to continue...");
-      // navi('/login');
-      console.log(error);
+            headers: {
+              link1: link1,
+              link2: link2,
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(data.link_anh_swap);
+        // const listImgs = JSON.parse(data[0].body);
+        // console.log(listImgs);
+        setLinkSwapImage(data.link_anh_swap);
+      } catch (error) {
+        // alert("login to continue...");
+        // navi('/login');
+        console.log(error);
+      }
+    } else {
+      alert("Uploade images to continue...");
     }
   };
-  console.log(link1);
-  console.log(link2);
+  // console.log(link1);
+  // console.log(link2);
   return (
     <>
       <div className={cx("wrapper")}>
@@ -150,7 +216,7 @@ function NewBorn() {
         </div>
         <Header />
         <div className={cx("image_middle")}>
-          <MomAndDad />
+          {/* <MomAndDad /> */}
           <Star />
         </div>
         <div className={cx("body")}>
@@ -161,7 +227,13 @@ function NewBorn() {
                 {picOne != "" ? (
                   <img src={picOne} />
                 ) : (
-                  <label htmlFor="pic1" className={cx("in-pic")}></label>
+                  <label
+                    className={cx("in-pic")}
+                    onClick={() => {
+                      setUpLoadFace(true);
+                      setIsLeftIn(true);
+                    }}
+                  ></label>
                 )}
                 <input
                   type="file"
@@ -174,7 +246,13 @@ function NewBorn() {
                 {picTwo != "" ? (
                   <img src={picTwo} />
                 ) : (
-                  <label htmlFor="pic2" className={cx("in-pic")}></label>
+                  <label
+                    className={cx("in-pic")}
+                    onClick={() => {
+                      setUpLoadFace(true);
+                      setIsLeftIn(false);
+                    }}
+                  ></label>
                 )}
                 <input
                   type="file"
@@ -186,11 +264,11 @@ function NewBorn() {
             </div>
             <div className={cx("action")}>
               {isLoading ? (
-                linkSwapImage && linkSwapImage.length >0 ? (
+                linkSwapImage && linkSwapImage.length > 0 ? (
                   <div className={cx("result")}>
                     <div className={cx("img-swap")}>
                       {linkSwapImage.map((item, index) => {
-                        return <img src={item} alt="" key={index} />;
+                        return <img src={item} alt="" key={index} onClick={()=>downloadImage(item)} />;
                       })}
                     </div>
                     <div className={cx("share")}>
@@ -199,7 +277,10 @@ function NewBorn() {
                   </div>
                 ) : (
                   <div className={cx("preloader")}>
-                    <div className={cx("loading")}></div>
+                    <div className={cx("loading")}>
+                      <span>{pecent}%</span>
+                      <div className={cx("pecent")}></div>
+                    </div>
                   </div>
                 )
               ) : (
@@ -217,6 +298,33 @@ function NewBorn() {
           <Pink_2 />
         </div>
       </div>
+      {upLoadFace && (
+        <div className={cx("preUpload")}>
+          <div className={cx("box-upload")}>
+            <h1>Choose your face</h1>
+            <div className={cx("his-upload")}>
+              <div className={cx("list")}>
+                {imageHistory &&
+                  imageHistory.length > 0 &&
+                  imageHistory.map((item, index) => {
+                    return (
+                      <img
+                        src={item.toString()}
+                        alt=""
+                        key={index}
+                        onClick={() =>
+                          handleChooseImg(item.toString(), isLeftIn)
+                        }
+                      />
+                    );
+                  })}
+              </div>
+            </div>
+            <span onClick={() => setUpLoadFace(false)}>Close</span>
+            <label htmlFor={isLeftIn?'pic1':'pic2'}>Upload new face</label>
+          </div>
+        </div>
+      )}
     </>
   );
 }

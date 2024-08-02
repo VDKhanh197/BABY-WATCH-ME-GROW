@@ -21,15 +21,15 @@ function SwapTemplate() {
 
   const handleChangePage = (selected: number) => {
     if (selected + 1 === maxPage) {
-      setPageData(data.slice((selected + 1) * 12 - 12, data.length - 1));
+      setPageData(data.slice((selected + 1) * 10 - 10, data.length));
     } else {
-      setPageData(data.slice((selected + 1) * 12 - 12, (selected + 1) * 12));
+      setPageData(data.slice((selected + 1) * 10 - 10, (selected + 1) * 10));
     }
     setPage(selected);
   };
   useEffect(() => {
     async function fectchData() {
-      const res = await axios.get('https://api.watchmegrow.online/get/list_video/all_video_baby_mom');
+      const res = await axios.get('https://api.watchmegrow.online/get/list_video/time_machine_temp');
       setData(res.data.list_sukien_video);
     }
 
@@ -37,11 +37,12 @@ function SwapTemplate() {
   }, []);
   useEffect(() => {
     async function setFirstPage() {
-      setPageData(data.slice(0, 12));
-      setMaxPage(Math.ceil(data.length / 12 - 1));
+      setPageData(data.slice(0, 10));
+      setMaxPage(Math.ceil(data.length / 10));
     }
     setFirstPage();
   }, [data]);
+  console.log(data.length);
 
   return (
     <div className={cx("back")}>

@@ -29,6 +29,10 @@ type User = {
   user_name: string;
 };
 
+interface ImageHistory {
+  url: string;
+}
+
 const cx = classNames.bind(styles);
 export default function MomAndChild() {
   const [preview1, setPreview1] = useState("");
@@ -49,6 +53,19 @@ export default function MomAndChild() {
   const [position, setPosition] = useState(0);
 
   const navi = useNavigate();
+
+  const [upLoadFace, setUpLoadFace] = useState(false);
+  const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
+
+  const handleChooseImg = async (src: string) => {
+    setUpLoadFace(false);
+    const str = `/var/www/build_futurelove/${src.replace(
+      "https://futurelove.online/",
+      ""
+    )}`;
+    setPreview1(src);
+    setLink1(str);
+  };
 
   try {
     let user: User | null = null;
@@ -71,6 +88,8 @@ export default function MomAndChild() {
     e: React.ChangeEvent<HTMLInputElement>,
     pic: number
   ) => {
+    setUpLoadFace(false);
+
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
@@ -95,7 +114,36 @@ export default function MomAndChild() {
       }
     }
   };
+
+  const downloadImage = (url:string) => {
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', "linkSwapImage.jpg");
+
+    // Append the anchor to the DOM, click it, and then remove it
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   useEffect(() => {
+
+    axios
+    .get(
+      `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
+      {
+        headers: {
+          ContentType: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    )
+    .then((res) => {
+      console.log(res.data.image_links_video);
+      setImageHistory(res.data.image_links_video);
+    });
+
     const interval = setInterval(() => {
       setPecent((prev) => prev + 1);
     }, 1800);
@@ -117,14 +165,16 @@ export default function MomAndChild() {
             <div className={cx("top")}>
               <div className={cx("box")}>
                 {preview1 == "" ? (
-                  <label htmlFor="upload1">
+                  <label onClick={() => {
+                      setUpLoadFace(true);
+                    }}>
                     <img src={images.uploadImage} alt="" />
                   </label>
                 ) : (
                   <img src={preview1} />
                 )}
               </div>
-              <div className={cx("box")}>
+              {/* <div className={cx("box")}>
                 {preview2 == "" ? (
                   <label htmlFor="upload2">
                     <img src={images.uploadImage} alt="" />
@@ -132,19 +182,19 @@ export default function MomAndChild() {
                 ) : (
                   <img src={preview2} />
                 )}
-              </div>
+              </div> */}
               <input
                 type="file"
-                id="upload1"
+                id="pic1"
                 hidden={true}
                 onChange={(e) => handleInputImg(e, 1)}
               />
-              <input
+              {/* <input
                 type="file"
                 id="upload2"
                 hidden={true}
                 onChange={(e) => handleInputImg(e, 2)}
-              />
+              /> */}
             </div>
             <div className={cx("btn")}>
               <span>Start</span>
@@ -219,6 +269,34 @@ export default function MomAndChild() {
           <Pink_2 />
         </div>
       </div>
+      {upLoadFace && (
+        <div className={cx("preUpload")}>
+          <div className={cx("box-upload")}>
+            <h1>Choose your face</h1>
+            <div className={cx("his-upload")}>
+              <div className={cx("list")}>
+                {imageHistory &&
+                  imageHistory.length > 0 &&
+                  imageHistory.map((item, index) => {
+                    console.log(item);
+                    return (
+                      <img
+                        src={item.toString()}
+                        alt=""
+                        key={index}
+                        onClick={() =>
+                          handleChooseImg(item.toString())
+                        }
+                      />
+                    );
+                  })}
+              </div>
+            </div>
+            <span onClick={() => setUpLoadFace(false)}>Close</span>
+            <label htmlFor={'pic1'}>Upload new face</label>
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -29,6 +29,10 @@ type User = {
   user_name: string;
 };
 
+interface ImageHistory {
+  url: string;
+}
+
 const cx = classNames.bind(styles);
 
 export default function MomAndDad() {
@@ -43,6 +47,25 @@ export default function MomAndDad() {
   const [position, setPosition] = useState(0);
 
   const navi = useNavigate();
+
+  const [upLoadFace, setUpLoadFace] = useState(false);
+  const [isLeftIn, setIsLeftIn] = useState(true);
+  const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
+
+  const handleChooseImg = async (src: string, isLeftIn: boolean) => {
+    setUpLoadFace(false);
+    const str = `/var/www/build_futurelove/${src.replace(
+      "https://futurelove.online/",
+      ""
+    )}`;
+    if (isLeftIn) {
+      setLink1(str);
+      setPreview1(src);
+    } else {
+      setLink2(str);
+      setPreview2(src);
+    }
+  };
 
   try {
     let user: User | null = null;
@@ -65,6 +88,8 @@ export default function MomAndDad() {
     e: React.ChangeEvent<HTMLInputElement>,
     pic: number
   ) => {
+    setUpLoadFace(false);
+
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
@@ -90,6 +115,21 @@ export default function MomAndDad() {
     }
   };
   useEffect(() => {
+    axios
+      .get(
+        `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
+        {
+          headers: {
+            ContentType: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data.image_links_video);
+        setImageHistory(res.data.image_links_video);
+      });
+      
     const interval = setInterval(() => {
       setPecent((prev) => prev + 1);
     }, 1800);
@@ -111,7 +151,10 @@ export default function MomAndDad() {
             <div className={cx("top")}>
               <div className={cx("box")}>
                 {preview1 == "" ? (
-                  <label htmlFor="upload1">
+                  <label onClick={() => {
+                    setUpLoadFace(true);
+                    setIsLeftIn(true);
+                  }}>
                     <img src={images.uploadImage} alt="" />
                   </label>
                 ) : (
@@ -120,7 +163,10 @@ export default function MomAndDad() {
               </div>
               <div className={cx("box")}>
                 {preview2 == "" ? (
-                  <label htmlFor="upload2">
+                  <label onClick={() => {
+                    setUpLoadFace(true);
+                    setIsLeftIn(false);
+                  }}>
                     <img src={images.uploadImage} alt="" />
                   </label>
                 ) : (
@@ -129,13 +175,13 @@ export default function MomAndDad() {
               </div>
               <input
                 type="file"
-                id="upload1"
+                id="pic1"
                 hidden={true}
                 onChange={(e) => handleInputImg(e, 1)}
               />
               <input
                 type="file"
-                id="upload2"
+                id="pic2"
                 hidden={true}
                 onChange={(e) => handleInputImg(e, 2)}
               />
@@ -174,6 +220,33 @@ export default function MomAndDad() {
           <Pink_2 />
         </div>
       </div>
+      {upLoadFace && (
+        <div className={cx("preUpload")}>
+          <div className={cx("box-upload")}>
+            <h1>Choose your face</h1>
+            <div className={cx("his-upload")}>
+              <div className={cx("list")}>
+                {imageHistory &&
+                  imageHistory.length > 0 &&
+                  imageHistory.map((item, index) => {
+                    return (
+                      <img
+                        src={item.toString()}
+                        alt=""
+                        key={index}
+                        onClick={() =>
+                          handleChooseImg(item.toString(), isLeftIn)
+                        }
+                      />
+                    );
+                  })}
+              </div>
+            </div>
+            <span onClick={() => setUpLoadFace(false)}>Close</span>
+            <label htmlFor={isLeftIn?'pic1':'pic2'}>Upload new face</label>
+          </div>
+        </div>
+      )}
     </>
   );
 }
