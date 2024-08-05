@@ -16,6 +16,7 @@ import { swapImage, swapVideo, uploadImageSwap } from "../../services/image";
 import Header from "../../components/Header";
 import { InputNewBorn, MomAndDad } from "../../assets/svg/momanddad";
 import axios from "axios";
+import DetailImg from "../../components/DetailImg/DetailImg";
 
 type User = {
   id_user: number;
@@ -48,8 +49,14 @@ function NewBorn() {
   const [upLoadFace, setUpLoadFace] = useState(false);
   const [isLeftIn, setIsLeftIn] = useState(true);
   const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
+  const [isOpenDetailImg, setIsOpenDetailImg] = useState(false);
+  const [urlImgDetail, setUrlImgDetail] = useState("");
 
   const navi = useNavigate();
+
+  const handleOpenDetail = (isOpen: boolean) => {
+    setIsOpenDetailImg(isOpen);
+  };
 
   const handleChooseImg = async (src: string, isLeftIn: boolean) => {
     setUpLoadFace(false);
@@ -131,11 +138,11 @@ function NewBorn() {
     }
   };
 
-  const downloadImage = (url:string) => {
+  const downloadImage = (url: string) => {
     // Create a temporary anchor element
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.setAttribute('download', "linkSwapImage.jpg");
+    link.setAttribute("download", "linkSwapImage.jpg");
 
     // Append the anchor to the DOM, click it, and then remove it
     document.body.appendChild(link);
@@ -145,20 +152,19 @@ function NewBorn() {
 
   useEffect(() => {
     axios
-    .get(
-      `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
-      {
-        headers: {
-          ContentType: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    )
-    .then((res) => {
-      console.log(res.data.image_links_video);
-      setImageHistory(res.data.image_links_video);
-    });
-
+      .get(
+        `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
+        {
+          headers: {
+            ContentType: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data.image_links_video);
+        setImageHistory(res.data.image_links_video);
+      });
 
     const interval = setInterval(() => {
       setPecent((prev) => prev + 1);
@@ -268,7 +274,17 @@ function NewBorn() {
                   <div className={cx("result")}>
                     <div className={cx("img-swap")}>
                       {linkSwapImage.map((item, index) => {
-                        return <img src={item} alt="" key={index} onClick={()=>downloadImage(item)} />;
+                        return (
+                          <img
+                            src={item}
+                            alt=""
+                            key={index}
+                            onClick={() => {
+                              setIsOpenDetailImg(true);
+                              setUrlImgDetail(item);
+                            }}
+                          />
+                        );
                       })}
                     </div>
                     <div className={cx("share")}>
@@ -321,9 +337,15 @@ function NewBorn() {
               </div>
             </div>
             <span onClick={() => setUpLoadFace(false)}>Close</span>
-            <label htmlFor={isLeftIn?'pic1':'pic2'}>Upload new face</label>
+            <label htmlFor={isLeftIn ? "pic1" : "pic2"}>Upload new face</label>
           </div>
         </div>
+      )}
+      {isOpenDetailImg && (
+        <DetailImg
+          handleClick={(isOpen) => handleOpenDetail(isOpen)}
+          url={urlImgDetail}
+        />
       )}
     </>
   );

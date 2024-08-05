@@ -24,7 +24,7 @@ const Routers = () => {
         <Route path="/swapVideo/:id" element={<SwapVideo />} />
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/setting/:id" element={<Setting />} />
-        <Route path="/momandchild" element={<MomAndChild />} />
+        <Route path="/momandchild/:folderName/:id" element={<MomAndChild />} />
         <Route path="/momanddad/:id" element={<MomAndDad />} />
 
 

@@ -96,18 +96,19 @@
   
     .img-swap {
       height: 240px;
-      width: 1080px;
+      width: fit-content;
       overflow-y: scroll;
       display: grid;
-      grid-template-columns: repeat(10,1fr);
+      grid-template-columns: repeat(8,1fr);
       gap:10px;
       &::-webkit-scrollbar {
         width: 0px;
         background: transparent; // Make the scrollbar transparent
       }
       & img {
-        width: 90px;
-        height: 110px;
+        width: 120px;
+        height: 120px;
+        object-fit: contain;
         border: 1px solid;
         border-radius: 8px;
 

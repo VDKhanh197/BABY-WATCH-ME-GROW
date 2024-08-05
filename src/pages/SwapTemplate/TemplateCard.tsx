@@ -5,7 +5,13 @@ import { Link } from "react-router-dom";
 import { SoundIcon } from "../../assets/icon";
 
 interface TemplateCardProps {
-  data: { linkgoc: string | ""; id: number };
+  data: {
+    linkgoc: string | "";
+    id: number;
+    image_sample: string | "";
+    folder_name: string | "";
+    id_cate: string | "";
+  };
   type: string;
   index: number;
 }
@@ -47,6 +53,27 @@ const TemplateCard: FC<TemplateCardProps> = ({ data, type, index }) => {
 
   if (data.linkgoc === "") {
     return <></>;
+  }
+  if (type === "k&m") {
+    return (
+      <div className={cx("card")}>
+        <div className={cx("box")}>
+          <img src={data.image_sample} alt="" />
+
+          {/* {isLoading && (
+            <div onClick={handleSound} className={cx("sound")}>
+              {isSound && <SoundIcon />}
+            </div>
+          )} */}
+        </div>
+        <Link
+          className={cx("button")}
+          to={`/momandchild/${data.folder_name}/${data.id_cate}`}
+        >
+          Choose
+        </Link>
+      </div>
+    );
   } else {
     return (
       <div className={cx("card")}>
@@ -68,7 +95,12 @@ const TemplateCard: FC<TemplateCardProps> = ({ data, type, index }) => {
             </div>
           )} */}
         </div>
-        <Link className={cx("button")} to={type==='d&m'?`/momanddad/${data.id}`:`/swapVideo/${data.id}`}>
+        <Link
+          className={cx("button")}
+          to={
+            type === "d&m" ? `/momanddad/${data.id}` : `/swapVideo/${data.id}`
+          }
+        >
           Choose
         </Link>
       </div>

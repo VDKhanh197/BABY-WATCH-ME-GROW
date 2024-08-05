@@ -17,7 +17,7 @@ function SwapTemplate() {
   const [maxPage, setMaxPage] = useState(0);
 
   const param = useParams();
-  const type = param?.type||"";
+  const type = param?.type || "";
 
   const handleChangePage = (selected: number) => {
     if (selected + 1 === maxPage) {
@@ -29,8 +29,22 @@ function SwapTemplate() {
   };
   useEffect(() => {
     async function fectchData() {
-      const res = await axios.get('https://api.watchmegrow.online/get/list_video/time_machine_temp');
-      setData(res.data.list_sukien_video);
+      if (type === "tm") {
+        const res = await axios.get(
+          "https://api.watchmegrow.online/get/list_video/time_machine_temp"
+        );
+        setData(res.data.list_sukien_video);
+      } else if (type === "d&m") {
+        const res = await axios.get(
+          "https://api.watchmegrow.online/get/list_video/all_video_baby_mom"
+        );
+        setData(res.data.list_sukien_video);
+      } else if (type === "k&m") {
+        const res = await axios.get(
+          "https://api.watchmegrow.online/get/list_image/mom_baby_temp"
+        );
+        setData(res.data);;
+      }
     }
 
     fectchData();
@@ -53,9 +67,12 @@ function SwapTemplate() {
         </div>
         <div className={cx("main")}>
           {pageData.length > 0 &&
-            pageData.map((item, index) => (
-              <TemplateCard key={index} index={index} type={type} data={item} />
-            ))}
+            pageData.map((item, index) => {
+              // console.log(item?.image);
+              return (
+                <TemplateCard key={index} index={index} type={type} data={item} />
+              )
+            })}
         </div>
         <div>
           <ReactPaginate

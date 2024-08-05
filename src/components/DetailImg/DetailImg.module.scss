@@ -1,0 +1,44 @@
+.wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    .box {
+        width: 1020px;
+        height: 100vh;
+        background-color: #fff;
+        padding: 24px;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .img {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            & img {
+                width: 320px;
+                border-radius: 24px;
+                object-fit: contain;
+            }
+        }
+        .btn {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            & span {
+                background-color: #59AECF;
+                color: #fff;
+                padding: 8px 16px;
+                border-radius: 8px;
+                width: fit-content;
+                cursor: pointer;
+            }
+        }
+    }
+}

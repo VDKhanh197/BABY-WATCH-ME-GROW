@@ -222,7 +222,7 @@ const HomePage = () => {
               <img src={images.kam6} alt="" />
             </div>
             <div className={cx("btn")}>
-              <div className={cx("button")} onClick={()=>navigate('/momandchild')}>
+              <div className={cx("button")} onClick={()=>navigate('/template/k&m')}>
                 <span>Try Kid & Mom</span>
               </div>
             </div>

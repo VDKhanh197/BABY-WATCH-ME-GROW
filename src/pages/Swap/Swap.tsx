@@ -17,6 +17,7 @@ import Header from "../../components/Header";
 import images from "../../assets/images";
 import axios from "axios";
 import { Console } from "console";
+import DetailImg from "../../components/DetailImg/DetailImg";
 
 type User = {
   id_user: number;
@@ -47,6 +48,8 @@ function Swap() {
   const [upLoadFace, setUpLoadFace] = useState(false);
   const [isLeftIn, setIsLeftIn] = useState(true);
   const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
+  const [isOpenDetailImg, setIsOpenDetailImg] = useState(false);
+  const [urlImgDetail, setUrlImgDetail] = useState("");
 
   const navi = useNavigate();
 
@@ -68,6 +71,10 @@ function Swap() {
   console.log("User Id: " + userId);
   const token = localStorage.getItem("accessToken");
   console.log("token: " + token);
+
+  const handleOpenDetail = (isOpen: boolean) => {
+    setIsOpenDetailImg(isOpen);
+  };
 
   const handleSwitchPage = (value: boolean) => {
     setSwitchToggle(value);
@@ -260,7 +267,14 @@ function Swap() {
                       <div className={cx("loading")}></div>
                     </div>
                   ) : (
-                    <img src={linkSwapImage} alt="" />
+                    <img
+                      src={linkSwapImage}
+                      alt=""
+                      onClick={() => {
+                        setUrlImgDetail(linkSwapImage);
+                        setIsOpenDetailImg(true);
+                      }}
+                    />
                   )
                 ) : (
                   <></>
@@ -302,9 +316,15 @@ function Swap() {
               </div>
             </div>
             <span onClick={() => setUpLoadFace(false)}>Close</span>
-            <label htmlFor={isLeftIn?'pic1':'pic2'}>Upload new face</label>
+            <label htmlFor={isLeftIn ? "pic1" : "pic2"}>Upload new face</label>
           </div>
         </div>
+      )}
+      {isOpenDetailImg && (
+        <DetailImg
+          handleClick={(isOpen) => handleOpenDetail(isOpen)}
+          url={urlImgDetail}
+        />
       )}
     </>
   );

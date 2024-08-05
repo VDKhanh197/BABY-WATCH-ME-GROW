@@ -1,17 +1,29 @@
 import { useEffect, useState } from "react";
 import styles from "./MomAndDad.module.scss";
 import classNames from "classnames/bind";
-import { CloudLeft, CloudRight, NextSlide, PlayIcon, PrevSlide } from "../../assets/icon";
+import {
+  CloudLeft,
+  CloudRight,
+  NextSlide,
+  PlayIcon,
+  PrevSlide,
+} from "../../assets/icon";
 import { BearIcon } from "../../assets/svg/bear";
 import { Pink_1, Pink_2 } from "../../assets/svg/pinkCloud";
 import { Heart, Star } from "../../assets/svg/star";
 import { Baby } from "../../assets/svg/baby";
 // import { set } from "nprogress";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { signin } from "../../services/auth";
-import { swapImage, swapVideo, uploadImageSwap } from "../../services/image";
+import {
+  swapImage,
+  swapVideo,
+  swapVideoMomAndDad,
+  swapVideoVersion2,
+  uploadImageSwap,
+} from "../../services/image";
 import Header from "../../components/Header";
 import axios from "axios";
 import images from "../../assets/images";
@@ -83,6 +95,7 @@ export default function MomAndDad() {
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("accessToken");
+  const params = useParams();
 
   const handleInputImg = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -114,6 +127,21 @@ export default function MomAndDad() {
       }
     }
   };
+
+  const handleSwapFace = async () => {
+    console.log("Click Swap");
+    setPecent(0);
+    setLoading(true);
+    if (params.id !== undefined) {
+      const randomLink = Math.random() < 0.5 ? link1 : link2;
+      const res = await swapVideoMomAndDad(randomLink, +params.id);
+      console.log(res);
+      if (res) {
+        setLinkSwapVideo(res.sukien_video.link_vid_da_swap);
+      }
+    }
+    setLoading(false);
+  };
   useEffect(() => {
     axios
       .get(
@@ -129,7 +157,7 @@ export default function MomAndDad() {
         console.log(res.data.image_links_video);
         setImageHistory(res.data.image_links_video);
       });
-      
+
     const interval = setInterval(() => {
       setPecent((prev) => prev + 1);
     }, 1800);
@@ -151,10 +179,12 @@ export default function MomAndDad() {
             <div className={cx("top")}>
               <div className={cx("box")}>
                 {preview1 == "" ? (
-                  <label onClick={() => {
-                    setUpLoadFace(true);
-                    setIsLeftIn(true);
-                  }}>
+                  <label
+                    onClick={() => {
+                      setUpLoadFace(true);
+                      setIsLeftIn(true);
+                    }}
+                  >
                     <img src={images.uploadImage} alt="" />
                   </label>
                 ) : (
@@ -163,10 +193,12 @@ export default function MomAndDad() {
               </div>
               <div className={cx("box")}>
                 {preview2 == "" ? (
-                  <label onClick={() => {
-                    setUpLoadFace(true);
-                    setIsLeftIn(false);
-                  }}>
+                  <label
+                    onClick={() => {
+                      setUpLoadFace(true);
+                      setIsLeftIn(false);
+                    }}
+                  >
                     <img src={images.uploadImage} alt="" />
                   </label>
                 ) : (
@@ -187,11 +219,11 @@ export default function MomAndDad() {
               />
             </div>
             <div className={cx("btn")}>
-              <span>Start</span>
+              <span onClick={handleSwapFace}>Start</span>
             </div>
             <div className={cx("bottom")}>
               <div className={cx("result")}>
-                {linkSwapVideo ? (
+                {linkSwapVideo && linkSwapVideo.length > 0 ? (
                   <video src={linkSwapVideo} controls />
                 ) : loading ? (
                   <div className={cx("preloader")}>
@@ -206,7 +238,6 @@ export default function MomAndDad() {
                   </div>
                 )}
               </div>
-              
             </div>
           </div>
         </div>
@@ -243,7 +274,7 @@ export default function MomAndDad() {
               </div>
             </div>
             <span onClick={() => setUpLoadFace(false)}>Close</span>
-            <label htmlFor={isLeftIn?'pic1':'pic2'}>Upload new face</label>
+            <label htmlFor={isLeftIn ? "pic1" : "pic2"}>Upload new face</label>
           </div>
         </div>
       )}

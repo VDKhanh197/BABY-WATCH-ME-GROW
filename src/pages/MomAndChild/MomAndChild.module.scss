@@ -101,6 +101,7 @@
             width: 158px;
             height: 232px;
             object-fit: cover;
+            cursor: pointer;
 
           }
         }
@@ -137,22 +138,27 @@
         
       }
 
-      .action-slide{
-        width: 716px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+      .btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #FFFFFF80;
+        margin: 0;
+        cursor: pointer;
+      }
+
+      :nth-child(2){
         position: absolute;
+        left: 16px;
         top: 50%;
-        transform: translateY(-50%);
-        .btn {
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          background-color: #FFFFFF80;
-          margin: 0;
-          cursor: pointer;
-        }
+        transform: translate(0,-50%);
+      }
+
+      :nth-child(3){
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translate(0,-50%);
       }
         
     }

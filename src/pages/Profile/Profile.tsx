@@ -11,6 +11,7 @@ import images from "../../assets/images";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { uploadImageSwap } from "../../services/image";
+import DetailImg from "../../components/DetailImg/DetailImg";
 
 type listItemType = {
   id?: number;
@@ -18,6 +19,7 @@ type listItemType = {
   link_video_goc?: string;
   link_image?: string;
   link_video_da_swap: string;
+  link_da_swap: string;
   thoi_gian_su_kien?: string;
   id_user?: string;
 };
@@ -44,12 +46,25 @@ export default function Profile() {
   const [avt, setAvt] = useState(user.link_avatar);
   const [isEdit, setIsEdit] = useState(false);
   const [listTemp, setListTemp] = useState<listItemType[] | []>([
-    { id_saved: "", link_video_da_swap: "" },
+    { id_saved: "", link_video_da_swap: "", link_da_swap: "" },
   ]);
   const [listCmt, setListCmt] = useState([]);
   const [countCM, setCountCM] = useState(1);
+  const [type, setType] = useState("Event");
+  const [isOpenDetailImg, setIsOpenDetailImg] = useState(false);
+  const [urlImgDetail, setUrlImgDetail] = useState("");
 
   const navi = useNavigate();
+
+  const handleOpenDetail = (isOpen: boolean) => {
+    setIsOpenDetailImg(isOpen);
+  };
+
+  const handleChangeContent = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setType(e.target.value);
+  };
 
   const handleChangeAvt = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -80,17 +95,6 @@ export default function Profile() {
     }
   };
 
-  
-
-  useEffect(() => {
-    axios
-      .get(
-        `https://api.watchmegrow.online/get/list_video/id_user_swap?id_user=${id}`
-      )
-      .then((res) => {
-        setListTemp(res.data.list_sukien_video);
-      });
-  }, [id]);
   useEffect(() => {
     //@ts-ignore
     axios
@@ -114,17 +118,54 @@ export default function Profile() {
       });
   }, [user]);
   useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem('user') || "").id_user;
-    const fecthData = async ()=>{
-      const {data} = await axios.get(
-        `https://databaseswap.mangasocial.online/lovehistory/pageComment/${countCM}?id_user=${userId}`
-      )
-        setListCmt(data.comment);
-        console.log(data.comment);
-
+    if (type === "Event") {
+      axios
+        .get(
+          `https://api.watchmegrow.online/get/list_video/id_user_swap?id_user=${id}`
+        )
+        .then((res) => {
+          setListTemp(res.data.list_sukien_video);
+        });
     }
+    if (type === "Newborn") {
+      axios
+        .get(
+          `https://api.watchmegrow.online/get/list_image/all_image_swap?type=newborn&id_user=${id}`
+        )
+        .then((res) => {
+          console.log(res);
+          setListTemp(res.data);
+        });
+    }
+    if (type === "Generator") {
+      axios
+        .get(
+          `https://api.watchmegrow.online/get/list_image/all_image_swap_generate?id_user=${id}`
+        )
+        .then((res) => {
+          setListTemp(res.data);
+        });
+    }
+    if (type === "mom") {
+      axios
+        .get(
+          `https://api.watchmegrow.online/get/list_image/all_image_swap_mom_baby?id_user=${id}&type=mom_and_baby`
+        )
+        .then((res) => {
+          setListTemp(res.data);
+        });
+    }
+  }, [type]);
+  useEffect(() => {
+    const userId = JSON.parse(localStorage.getItem("user") || "").id_user;
+    const fecthData = async () => {
+      const { data } = await axios.get(
+        `https://databaseswap.mangasocial.online/lovehistory/pageComment/${countCM}?id_user=${userId}`
+      );
+      setListCmt(data.comment);
+      console.log(data.comment);
+    };
     fecthData();
-
   }, []);
   //   const [currentUser, setCurrentUser] = useState({
   //     id_user: "",
@@ -191,7 +232,13 @@ export default function Profile() {
                   >
                     Edit profile
                   </span>
-                  <img src={images.setting} alt="" onClick={()=> {navi(`/setting/${user.id_user}`)}}/>
+                  <img
+                    src={images.setting}
+                    alt=""
+                    onClick={() => {
+                      navi(`/setting/${user.id_user}`);
+                    }}
+                  />
                 </div>
               </div>
 
@@ -210,25 +257,44 @@ export default function Profile() {
 
             <div className={cx("content")}>
               <div className={cx("left")}>
-                <h1>Event</h1>
+                <select name="" id="" onChange={(e) => handleChangeContent(e)}>
+                  <option value="Event">Video</option>
+                  <option value="Generator">Generator</option>
+                  <option value="Newborn">Newborn</option>
+                  <option value="mom">Mom and baby</option>
+                </select>
                 <div className={cx("event")}>
                   {listTemp &&
                     listTemp.map((item, index) => {
                       //   console.log(item);
-                      return (
-                        <div className={cx("vid")} key={index}>
-                          <video src={item.link_video_da_swap} controls />
-                        </div>
-                      );
+                      if (type === "Event") {
+                        return (
+                          <div className={cx("vid")} key={index}>
+                            <video src={item.link_video_da_swap} controls />
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div className={cx("vid")} key={index}>
+                            <img
+                              src={item.link_da_swap}
+                              onClick={() => {
+                                setUrlImgDetail(item.link_da_swap);
+                                setIsOpenDetailImg(true);
+                              }}
+                            />
+                          </div>
+                        );
+                      }
                     })}
                 </div>
               </div>
 
-              <div className={cx("right")}>
+              {/* <div className={cx("right")}>
                 <h1>Comments</h1>
                 <div className={cx("list-cmt")}>
                   {listCmt &&
-                    listCmt.map((item:Comment, index:number) => {
+                    listCmt.map((item: Comment, index: number) => {
                       return (
                         <div className={cx("item")} key={index}>
                           <img src={item.avatar_user} alt="" />
@@ -240,7 +306,7 @@ export default function Profile() {
                       );
                     })}
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -294,6 +360,12 @@ export default function Profile() {
             </div>
           </form>
         </div>
+      )}
+      {isOpenDetailImg && (
+        <DetailImg
+          handleClick={(isOpen) => handleOpenDetail(isOpen)}
+          url={urlImgDetail}
+        />
       )}
     </>
   );

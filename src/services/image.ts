@@ -92,3 +92,23 @@ export const swapVideoVersion2 = async (
     return null;
   }
 };
+
+export const swapVideoMomAndDad = async (
+  link1: string,
+  link2: number | undefined
+) => {
+  let config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  if (link2 !== undefined) {
+    return await apiLhvn.get<SuccessResponse, FailResponse>(
+      `/getdata/genvideo/swap/imagevid/grow_up?device_them_su_kien=gdgdgf&ip_them_su_kien=dfbdfbdf&src_vid_path=${link2}&src_img=${link1}&id_user=${userId} `,
+
+      config
+    );
+  } else {
+    return null;
+  }
+};

@@ -8,13 +8,14 @@ import { Heart, Star } from "../../assets/svg/star";
 import { Baby } from "../../assets/svg/baby";
 // import { set } from "nprogress";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { signin } from "../../services/auth";
 import { swapImage, swapVideo, uploadImageSwap } from "../../services/image";
 import Header from "../../components/Header";
 import axios from "axios";
 import images from "../../assets/images";
+import DetailImg from "../../components/DetailImg/DetailImg";
 
 type User = {
   id_user: number;
@@ -33,6 +34,10 @@ interface ImageHistory {
   url: string;
 }
 
+interface ImgDetail {
+  image: string;
+}
+
 const cx = classNames.bind(styles);
 export default function MomAndChild() {
   const [preview1, setPreview1] = useState("");
@@ -40,22 +45,24 @@ export default function MomAndChild() {
   const [loading, setLoading] = useState(false);
   const [link1, setLink1] = useState<any>("");
   const [link2, setLink2] = useState<any>("");
-  const [linkSwapVideo, setLinkSwapVideo] = useState([
-    images.imgAt1,
-    images.imgAt2,
-    images.imgAt3,
-    images.imgAt4,
-    images.imgAt5,
-    images.imgAt6,
-  ]);
+  const [linkSwapVideo, setLinkSwapVideo] = useState([]);
+  const [linkPrevVideo, setLinkPrevVideo] = useState<ImgDetail[]>([]);
   const [currentImg, setCurrentImg] = useState(4);
   const [pecent, setPecent] = useState(0);
   const [position, setPosition] = useState(0);
+  const [isOpenDetailImg, setIsOpenDetailImg] = useState(false);
+  const [urlImgDetail, setUrlImgDetail] = useState("");
 
   const navi = useNavigate();
 
   const [upLoadFace, setUpLoadFace] = useState(false);
   const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
+
+  const params = useParams();
+
+  const handleOpenDetail = (isOpen: boolean) => {
+    setIsOpenDetailImg(isOpen);
+  };
 
   const handleChooseImg = async (src: string) => {
     setUpLoadFace(false);
@@ -115,11 +122,11 @@ export default function MomAndChild() {
     }
   };
 
-  const downloadImage = (url:string) => {
+  const downloadImage = (url: string) => {
     // Create a temporary anchor element
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.setAttribute('download', "linkSwapImage.jpg");
+    link.setAttribute("download", "linkSwapImage.jpg");
 
     // Append the anchor to the DOM, click it, and then remove it
     document.body.appendChild(link);
@@ -127,22 +134,63 @@ export default function MomAndChild() {
     document.body.removeChild(link);
   };
 
+  const handleSwapFace = async () => {
+    if (preview1 !== "") {
+      setLoading(true);
+      setLinkSwapVideo([]);
+      setPecent(0);
+      console.log("Click Swap");
+      if (params.id !== undefined) {
+        const res = await axios.get(
+          `https://api.watchmegrow.online/getdata/swap/listimage_mom_baby?device_them_su_kien=browser&ip_them_su_kien=1111&id_user=${userId}&list_folder=${params.folderName}`,
+          {
+            headers: {
+              link1: link1,
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        console.log(res.data);
+        if (res) {
+          setLinkSwapVideo(res.data.link_anh_swap);
+        }
+      }
+      setLoading(false);
+    } else {
+      alert("input an image");
+    }
+  };
+  //  console.log(params.id);
   useEffect(() => {
+    axios
+      .get(
+        `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
+        {
+          headers: {
+            ContentType: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data.image_links_video);
+        setImageHistory(res.data.image_links_video);
+      });
 
     axios
-    .get(
-      `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
-      {
-        headers: {
-          ContentType: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    )
-    .then((res) => {
-      console.log(res.data.image_links_video);
-      setImageHistory(res.data.image_links_video);
-    });
+      .get(
+        `https://api.watchmegrow.online/get/list_image/mom_baby_temp_detail?id=${params.id}`,
+        {
+          headers: {
+            ContentType: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        setLinkPrevVideo(res.data);
+      });
 
     const interval = setInterval(() => {
       setPecent((prev) => prev + 1);
@@ -165,9 +213,11 @@ export default function MomAndChild() {
             <div className={cx("top")}>
               <div className={cx("box")}>
                 {preview1 == "" ? (
-                  <label onClick={() => {
+                  <label
+                    onClick={() => {
                       setUpLoadFace(true);
-                    }}>
+                    }}
+                  >
                     <img src={images.uploadImage} alt="" />
                   </label>
                 ) : (
@@ -197,11 +247,11 @@ export default function MomAndChild() {
               /> */}
             </div>
             <div className={cx("btn")}>
-              <span>Start</span>
+              <span onClick={handleSwapFace}>Start</span>
             </div>
             <div className={cx("bottom")}>
               <div className={cx("list")}>
-                {linkSwapVideo ? (
+                {linkSwapVideo && linkSwapVideo.length > 0 ? (
                   <>
                     <div
                       className={cx("items")}
@@ -211,8 +261,19 @@ export default function MomAndChild() {
                       }}
                     >
                       {linkSwapVideo &&
+                        linkSwapVideo.length > 0 &&
                         linkSwapVideo.map((item, index) => {
-                          return <img src={item} alt="" key={index} />;
+                          return (
+                            <img
+                              src={item}
+                              alt=""
+                              key={index}
+                              onClick={() => {
+                                setUrlImgDetail(item);
+                                setIsOpenDetailImg(true);
+                              }}
+                            />
+                          );
                         })}
                     </div>
                   </>
@@ -224,38 +285,61 @@ export default function MomAndChild() {
                     </div>
                   </div>
                 ) : (
-                  <></>
+                  <>
+                    <div
+                      className={cx("items")}
+                      style={{
+                        transform: `translate(${position}px)`,
+                        transition: `transform linear .3s`,
+                      }}
+                    >
+                      {linkPrevVideo &&
+                        linkPrevVideo.length > 0 &&
+                        linkPrevVideo.map((item, index) => {
+                          return (
+                            <img
+                              src={item.image}
+                              alt=""
+                              key={index}
+                              onClick={() => {
+                                setUrlImgDetail(item.image);
+                                setIsOpenDetailImg(true);
+                              }}
+                            />
+                          );
+                        })}
+                    </div>
+                  </>
                 )}
               </div>
-              {linkSwapVideo && (
-                <div className={cx("action-slide")}>
-                  <div
-                    className={cx("btn")}
-                    onClick={() => {
-                      if (currentImg < linkSwapVideo.length) {
-                        setCurrentImg((prev) => prev + 1);
-                        setPosition((prevPos) => prevPos - 166);
-                      } else {
-                        setCurrentImg(4);
-                        setPosition(0);
-                      }
-                    }}
-                  >
-                    <PrevSlide />
-                  </div>
-                  <div
-                    className={cx("btn")}
-                    onClick={() => {
-                      if (currentImg > 4) {
-                        setCurrentImg((prev) => prev - 1);
-                        setPosition((prevPos) => prevPos + 166);
-                      }
-                    }}
-                  >
-                    <NextSlide />
-                  </div>
+              <div
+                  className={cx("btn")}
+                  onClick={() => {
+                    if (
+                      currentImg < linkSwapVideo.length ||
+                      currentImg < linkPrevVideo.length
+                    ) {
+                      setCurrentImg((prev) => prev + 1);
+                      setPosition((prevPos) => prevPos - 166);
+                    } else {
+                      setCurrentImg(4);
+                      setPosition(0);
+                    }
+                  }}
+                >
+                  <PrevSlide />
                 </div>
-              )}
+                <div
+                  className={cx("btn")}
+                  onClick={() => {
+                    if (currentImg > 4) {
+                      setCurrentImg((prev) => prev - 1);
+                      setPosition((prevPos) => prevPos + 166);
+                    }
+                  }}
+                >
+                  <NextSlide />
+                </div>
             </div>
           </div>
         </div>
@@ -284,18 +368,22 @@ export default function MomAndChild() {
                         src={item.toString()}
                         alt=""
                         key={index}
-                        onClick={() =>
-                          handleChooseImg(item.toString())
-                        }
+                        onClick={() => handleChooseImg(item.toString())}
                       />
                     );
                   })}
               </div>
             </div>
             <span onClick={() => setUpLoadFace(false)}>Close</span>
-            <label htmlFor={'pic1'}>Upload new face</label>
+            <label htmlFor={"pic1"}>Upload new face</label>
           </div>
         </div>
+      )}
+      {isOpenDetailImg && (
+        <DetailImg
+          handleClick={(isOpen) => handleOpenDetail(isOpen)}
+          url={urlImgDetail}
+        />
       )}
     </>
   );

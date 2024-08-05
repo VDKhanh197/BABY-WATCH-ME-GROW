@@ -198,12 +198,15 @@
             .left {
                 flex: 5;
                 overflow: hidden;
-                & h1 {
+                & select {
                     font-family: Quicksand;
                     font-size: 24px;
                     font-weight: 900;
                     line-height: 30px;
                     text-transform: uppercase;  
+                    border: none;
+                    background-color: transparent;
+                    outline: none;
 
                 }
                 .event {
@@ -215,7 +218,8 @@
                     display: grid;
                     grid-template-columns: repeat(4,1fr);
                     padding: 24px;
-                    gap: 12px;
+                    column-gap: 24px;
+                    row-gap: 24px;
                     overflow: scroll;
                     place-items: center;
                     &::-webkit-scrollbar {
@@ -223,7 +227,7 @@
                         background: transparent; // Make the scrollbar transparent
                     }
                     .vid {
-                        width: 152px;
+                        width: 200px;
                         height: 304px;
                         display: flex;
                         justify-content: center;
@@ -236,65 +240,70 @@
                             height: 100%;
                             object-fit: cover;
                         }
+                        & img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        } 
                     }
                     
                 }
             }
-            .right {
-                flex: 2;
-                & h1 {
-                    font-family: Quicksand;
-                    font-size: 24px;
-                    font-weight: 900;
-                    line-height: 30px;
-                    text-transform: uppercase;  
+            // .right {
+            //     flex: 2;
+            //     & h1 {
+            //         font-family: Quicksand;
+            //         font-size: 24px;
+            //         font-weight: 900;
+            //         line-height: 30px;
+            //         text-transform: uppercase;  
 
-                }
-                .list-cmt {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 12px;
-                    margin-top: 24px;
-                    height: 418px;
-                    overflow: scroll;
-                    &::-webkit-scrollbar {
-                        width: 0px;
-                        background: transparent; // Make the scrollbar transparent
-                    }
-                    .item {
-                        display: flex;
-                        flex-direction: row;
-                        gap: 4px;
-                        & img {
-                            width: 28px;
-                            height: 28px;
-                            border-radius: 50%;
-                        }
-                        .mess {
-                            display: flex;
-                            flex-direction: column;
-                            gap: 4px;
-                            & strong {
-                                display: block;
-                                font-family: Quicksand;
-                                font-size: 14px;
-                                font-weight: 700;
-                                line-height: 17.5px;
+            //     }
+            //     .list-cmt {
+            //         display: flex;
+            //         flex-direction: column;
+            //         gap: 12px;
+            //         margin-top: 24px;
+            //         height: 418px;
+            //         overflow: scroll;
+            //         &::-webkit-scrollbar {
+            //             width: 0px;
+            //             background: transparent; // Make the scrollbar transparent
+            //         }
+            //         .item {
+            //             display: flex;
+            //             flex-direction: row;
+            //             gap: 4px;
+            //             & img {
+            //                 width: 28px;
+            //                 height: 28px;
+            //                 border-radius: 50%;
+            //             }
+            //             .mess {
+            //                 display: flex;
+            //                 flex-direction: column;
+            //                 gap: 4px;
+            //                 & strong {
+            //                     display: block;
+            //                     font-family: Quicksand;
+            //                     font-size: 14px;
+            //                     font-weight: 700;
+            //                     line-height: 17.5px;
 
-                            }
-                            & span {
-                                display: block;
-                                font-family: Quicksand;
-                                font-size: 14px;
-                                font-weight: 500;
-                                line-height: 17.5px;
-                                text-align: left;
+            //                 }
+            //                 & span {
+            //                     display: block;
+            //                     font-family: Quicksand;
+            //                     font-size: 14px;
+            //                     font-weight: 500;
+            //                     line-height: 17.5px;
+            //                     text-align: left;
 
-                            }
-                        }
-                    }
-                }
-            }
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
         }
         
     }
