@@ -45,6 +45,7 @@ function SwapVideo() {
   const [picOne, setPicOne] = useState("");
   const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
   const [upLoadFace, setUpLoadFace] = useState(false);
+  const [preview, setPreview] = useState("");
 
   const [link1, setLink1] = useState<any>("");
 
@@ -139,13 +140,28 @@ function SwapVideo() {
         setImageHistory(res.data.image_links_video);
       });
 
+    axios
+      .get(
+        `https://api.watchmegrow.online/get/list_video/time_machine_temp_detail?id=${params.id}`,
+        {
+          headers: {
+            ContentType: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        // console.log(res.data[0].linkgoc);
+        setPreview(res.data[0].linkgoc);
+      });
+
     const interval = setInterval(() => {
       setPecent((prev) => prev + 1);
     }, 1800);
 
     return () => clearInterval(interval);
   }, []);
-console.log(link1);
+  console.log(link1);
   return (
     <>
       <div className={cx("wrapper")}>
@@ -204,7 +220,9 @@ console.log(link1);
                     </div>
                   </div>
                 ) : (
-                  <></>
+                  <>
+                    <video controls src={preview} />
+                  </>
                 )}
               </div>
             </div>
