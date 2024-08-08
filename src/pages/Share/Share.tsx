@@ -73,16 +73,6 @@ export default function Profile() {
       .then((res) => {
         setUser(res.data);
       })
-      .then(() => {
-        user.link_avatar.includes("/var/www/build_futurelove/")
-          ? setAvt(
-              `https://futurelove.online/${user.link_avatar.replace(
-                "/var/www/build_futurelove/",
-                ""
-              )}`
-            )
-          : setAvt(user.link_avatar);
-      });
   }, []);
   useEffect(() => {
     if (type === "Event") {
@@ -131,19 +121,31 @@ export default function Profile() {
           <Heart />
         </div>
         <div className={cx("body")}>
+            {localStorage.getItem("accessToken")&& <Header/>}
           <div className={cx("container")}>
             <div className={cx("banner")}>
               <div className={cx("avatar")}>
                 {user.link_avatar ? (
                   <label htmlFor="avt">
-                    <img src={avt} className={cx("imgAvt")} alt="" />
+                    <img
+                      src={user.link_avatar}
+                      className={cx("imgAvt")}
+                      alt=""
+                      onClick={() => {
+                        setUrlImgDetail(user.link_avatar);
+                        setIsOpenDetailImg(true);
+                      }}
+                    />
                   </label>
                 ) : (
-                  <label htmlFor="avt">
+                  <label htmlFor="">
                     <img src={images.camera} alt="" />
                     <span>Upload image</span>
                   </label>
                 )}
+              </div>
+              <div className={cx("info")}>
+                <span>Album of {user.user_name}</span>
               </div>
             </div>
 

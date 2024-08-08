@@ -163,7 +163,14 @@ export default function MomAndDad() {
       });
 
     const interval = setInterval(() => {
-      setPecent((prev) => prev + 1);
+      setPecent((prev) => {
+        if (prev < 100) {
+          return prev + 1;
+        } else {
+          clearInterval(interval);
+          return 100;
+        }
+      });
     }, 1800);
 
     return () => clearInterval(interval);

@@ -149,7 +149,7 @@ function Swap() {
   const handleSwapFace = async () => {
     if (
       token == null ||
-      token.length == 0 ||
+      token.length === 0 ||
       token === undefined ||
       token === ""
     ) {
@@ -178,7 +178,7 @@ function Swap() {
         }
       );
       if (data) {
-        // setLinkSwapImage(data.sukien_baby[0].link_da_swap);
+        setLinkSwapImage(data.sukien_baby[0].link_da_swap);
         console.log(data);
       }
     } catch (error) {

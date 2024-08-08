@@ -131,11 +131,11 @@ function SwapVideo() {
         const res = await swapVideoVersion2(link1, +params.id);
         console.log(res);
         if (res) {
-          // setLinkSwapVideo(res.sukien_video.link_vid_da_swap);
+          setLinkSwapVideo(res.sukien_video.link_vid_da_swap);
           console.log(res);
         }
       }
-      setLoading(false);
+      // setLoading(false);
     } else {
       alert("input an image");
     }
@@ -172,7 +172,14 @@ function SwapVideo() {
       });
 
     const interval = setInterval(() => {
-      setPecent((prev) => prev + 1);
+      setPecent((prev) => {
+        if (prev < 100) {
+          return prev + 1;
+        } else {
+          clearInterval(interval);
+          return 100;
+        }
+      });
     }, 1800);
 
     return () => clearInterval(interval);

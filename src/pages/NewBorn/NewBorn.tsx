@@ -162,9 +162,16 @@ function NewBorn() {
         setImageHistory(res.data.image_links_video);
       });
 
-    const interval = setInterval(() => {
-      setPecent((prev) => prev + 1);
-    }, 1800);
+      const interval = setInterval(() => {
+        setPecent((prev) => {
+          if (prev < 100) {
+            return prev + 1;
+          } else {
+            clearInterval(interval);
+            return 100;
+          }
+        });
+      }, 1800);
 
     return () => clearInterval(interval);
   }, []);
@@ -195,10 +202,11 @@ function NewBorn() {
             },
           }
         );
-        console.log(data.link_anh_swap);
+        console.log(data);
         // const listImgs = JSON.parse(data[0].body);
         // console.log(listImgs);
         setLinkSwapImage(data.link_anh_swap);
+        // setIsLoading(false);
       } catch (error) {
         // alert("login to continue...");
         // navi('/login');

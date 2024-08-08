@@ -197,7 +197,14 @@ export default function MomAndChild() {
       });
 
     const interval = setInterval(() => {
-      setPecent((prev) => prev + 1);
+      setPecent((prev) => {
+        if (prev < 100) {
+          return prev + 1;
+        } else {
+          clearInterval(interval);
+          return 100;
+        }
+      });
     }, 1800);
 
     return () => clearInterval(interval);
@@ -317,33 +324,33 @@ export default function MomAndChild() {
                 )}
               </div>
               <div
-                  className={cx("btn")}
-                  onClick={() => {
-                    if (
-                      currentImg < linkSwapVideo.length ||
-                      currentImg < linkPrevVideo.length
-                    ) {
-                      setCurrentImg((prev) => prev + 1);
-                      setPosition((prevPos) => prevPos - 166);
-                    } else {
-                      setCurrentImg(4);
-                      setPosition(0);
-                    }
-                  }}
-                >
-                  <PrevSlide />
-                </div>
-                <div
-                  className={cx("btn")}
-                  onClick={() => {
-                    if (currentImg > 4) {
-                      setCurrentImg((prev) => prev - 1);
-                      setPosition((prevPos) => prevPos + 166);
-                    }
-                  }}
-                >
-                  <NextSlide />
-                </div>
+                className={cx("btn")}
+                onClick={() => {
+                  if (currentImg > 4) {
+                    setCurrentImg((prev) => prev - 1);
+                    setPosition((prevPos) => prevPos + 166);
+                  }
+                }}
+              >
+                <PrevSlide />
+              </div>
+              <div
+                className={cx("btn")}
+                onClick={() => {
+                  if (
+                    currentImg < linkSwapVideo.length ||
+                    currentImg < linkPrevVideo.length
+                  ) {
+                    setCurrentImg((prev) => prev + 1);
+                    setPosition((prevPos) => prevPos - 166);
+                  } else {
+                    setCurrentImg(4);
+                    setPosition(0);
+                  }
+                }}
+              >
+                <NextSlide />
+              </div>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { uploadImageSwap } from "../../services/image";
 import DetailImg from "../../components/DetailImg/DetailImg";
+import { Console } from "console";
 
 type listItemType = {
   id?: number;
@@ -45,7 +46,8 @@ export default function Profile() {
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("accessToken");
-  const [avt, setAvt] = useState(user.link_avatar);
+  const [avt, setAvt] = useState("");
+  const [avtTmp, setAvtTmp] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const [listTemp, setListTemp] = useState<listItemType[] | []>([
     { id_saved: "", link_video_da_swap: "", link_da_swap: "" },
@@ -67,38 +69,63 @@ export default function Profile() {
   ) => {
     setType(e.target.value);
   };
-
-  const handleChangeAvt = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputImg = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    pic: number
+  ) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
+      const file: File = e.target.files[0];
       const formData = new FormData();
-      formData.append("src_img", e.target.files[0]);
-      let res1 = await uploadImageSwap(formData, "nu");
-      axios
-        .post(
-          `https://databaseswap.mangasocial.online/changeavatar/${userId}/upload`,
-          {
-            link_img: res1,
-            check_img: "upload",
-          },
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        )
-        .then((res) => {
-          // setAvt(res.data);
-          console.log(res.data);
-          alert("Update avatar successfully!");
-        });
+      // const data
+      if (file && e.target.files[0]) {
+        formData.append("src_img", file);
+        await axios
+          .post(
+            `https://databaseswap.mangasocial.online/upload-gensk/${userId}?type=src_nu`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+            setAvtTmp(res.data);
+          });
+      }
+      setAvt(URL.createObjectURL(e.target.files[0]));
+      console.log(URL.createObjectURL(e.target.files[0]));
     }
   };
 
+  const handleChangeAvt = async () => {
+    setIsEdit(false);
+    await axios
+      .post(
+        `https://databaseswap.mangasocial.online/changeavatar/${userId}`,
+        {
+          link_img: avtTmp,
+          check_img: "upload",
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        setAvt(res.data);
+        console.log(res.data);
+        alert("Update avatar successfully!");
+      });
+  };
+
   useEffect(() => {
-    //@ts-ignore
     axios
       .get(`https://databaseswap.mangasocial.online/profile/${id}`, {
         headers: {
@@ -107,18 +134,8 @@ export default function Profile() {
       })
       .then((res) => {
         setUser(res.data);
-      })
-      .then(() => {
-        user.link_avatar.includes("/var/www/build_futurelove/")
-          ? setAvt(
-              `https://futurelove.online/${user.link_avatar.replace(
-                "/var/www/build_futurelove/",
-                ""
-              )}`
-            )
-          : setAvt(user.link_avatar);
       });
-  }, [user]);
+  }, [avt]);
   useEffect(() => {
     if (type === "Event") {
       axios
@@ -158,28 +175,6 @@ export default function Profile() {
         });
     }
   }, [type]);
-  useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem("user") || "").id_user;
-    const fecthData = async () => {
-      const { data } = await axios.get(
-        `https://databaseswap.mangasocial.online/lovehistory/pageComment/${countCM}?id_user=${userId}`
-      );
-      setListCmt(data.comment);
-      console.log(data.comment);
-    };
-    fecthData();
-  }, []);
-  //   const [currentUser, setCurrentUser] = useState({
-  //     id_user: "",
-  //     link_avatar: "",
-  //     ip_register: "",
-  //   });
-  //   useEffect(() => {
-  //     if (localStorage.getItem("user")) {
-  //       setCurrentUser(JSON.parse(localStorage.getItem("user") || ""));
-  //     }
-  //   }, []);
-  // console.log(listCmt);
 
   return (
     <>
@@ -193,11 +188,15 @@ export default function Profile() {
             <div className={cx("banner")}>
               <div className={cx("avatar")}>
                 {user.link_avatar ? (
-                  <label htmlFor="avt">
-                    <img src={avt} className={cx("imgAvt")} alt="" />
+                  <label htmlFor="" onClick={() => setIsEdit(true)}>
+                    <img
+                      src={user.link_avatar}
+                      className={cx("imgAvt")}
+                      alt=""
+                    />
                   </label>
                 ) : (
-                  <label htmlFor="avt">
+                  <label htmlFor="" onClick={() => setIsEdit(true)}>
                     <img src={images.camera} alt="" />
                     <span>Upload image</span>
                   </label>
@@ -207,7 +206,7 @@ export default function Profile() {
                   id="avt"
                   hidden={true}
                   onChange={(e) => {
-                    handleChangeAvt(e);
+                    handleInputImg(e, 1);
                   }}
                 />
               </div>
@@ -350,9 +349,19 @@ export default function Profile() {
 
             <div className={cx("form")}>
               {user.link_avatar ? (
-                <label htmlFor="avt">
-                  <img src={avt} className={cx("imgAvt")} alt="" />
-                </label>
+                avtTmp ? (
+                  <label htmlFor="avt">
+                    <img src={avt} className={cx("imgAvt")} alt="" />
+                  </label>
+                ) : (
+                  <label htmlFor="avt">
+                    <img
+                      src={user.link_avatar}
+                      className={cx("imgAvt")}
+                      alt=""
+                    />
+                  </label>
+                )
               ) : (
                 <label htmlFor="avt">
                   <img src={images.camera} alt="" />
@@ -363,13 +372,7 @@ export default function Profile() {
                 <input type="text" placeholder="@hieu" />
                 <div className={cx("btn")}>
                   <label htmlFor="avt">Upload image</label>
-                  <span
-                    onClick={() => {
-                      setIsEdit(false);
-                    }}
-                  >
-                    Save
-                  </span>
+                  <span onClick={handleChangeAvt}>Save</span>
                 </div>
               </div>
             </div>
