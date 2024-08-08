@@ -103,7 +103,7 @@ const HomePage = () => {
                 features. Start to use our baby maker now!
               </span>
             </div>
-            <Link to={"/template/tm"} className={cx("button")}>
+            <Link to={"/template/tm/1"} className={cx("button")}>
               <span>Try Time Machine</span>
             </Link>
           </div>
@@ -179,7 +179,7 @@ const HomePage = () => {
                 tool offers unparalleled realism.
               </span>
             </div>
-            <div className={cx("button")} onClick={()=>navigate('/template/d&m')}>
+            <div className={cx("button")} onClick={()=>navigate('/template/d&m/1')}>
               <span>Try Dad & Mom</span>
             </div>
           </div>
@@ -222,7 +222,7 @@ const HomePage = () => {
               <img src={images.kam6} alt="" />
             </div>
             <div className={cx("btn")}>
-              <div className={cx("button")} onClick={()=>navigate('/template/k&m')}>
+              <div className={cx("button")} onClick={()=>navigate('/template/k&m/1')}>
                 <span>Try Kid & Mom</span>
               </div>
             </div>

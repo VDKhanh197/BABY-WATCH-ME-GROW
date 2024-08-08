@@ -33,6 +33,7 @@ const images = {
     kam4: require('./kam4.png'),
     kam5: require('./kam5.png'),
     kam6: require('./kam6.png'),
+    bgProfile: require('./bgProfile.jpg'),
 }
 
 export default images;

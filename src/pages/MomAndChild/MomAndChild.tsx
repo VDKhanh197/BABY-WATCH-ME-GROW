@@ -96,29 +96,33 @@ export default function MomAndChild() {
     pic: number
   ) => {
     setUpLoadFace(false);
-
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
-
-      if (pic === 1) {
-        const formData = new FormData();
-        formData.append("src_img", e.target.files[0]);
-        let res1 = await uploadImageSwap(formData, "nu");
-        setLink1(res1);
-        const imgURL = URL.createObjectURL(e.target.files[0]).toString();
-        setPreview1(imgURL);
-        console.log(res1);
+      const file: File = e.target.files[0];
+      const formData = new FormData();
+      // const data
+      if (file && e.target.files[0]) {
+        formData.append("src_img", file);
+        axios
+          .post(
+            `https://databaseswap.mangasocial.online/upload-gensk/${userId}?type=src_nu`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+            pic === 1 ? setLink1(res.data) : setLink2(res.data);
+          });
       }
-      if (pic === 2) {
-        const formData = new FormData();
-        formData.append("src_img", e.target.files[0]);
-        let res1 = await uploadImageSwap(formData, "nu");
-        setLink2(res1);
-        const imgURL = URL.createObjectURL(e.target.files[0]).toString();
-        setPreview2(imgURL);
-        console.log(res1);
-      }
+      pic === 1
+        ? setPreview1(URL.createObjectURL(e.target.files[0]))
+        : setPreview2(URL.createObjectURL(e.target.files[0]));
     }
   };
 

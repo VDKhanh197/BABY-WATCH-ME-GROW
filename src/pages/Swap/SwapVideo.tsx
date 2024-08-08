@@ -95,15 +95,28 @@ function SwapVideo() {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
-
-      if (pic === 1) {
-        const formData = new FormData();
-        formData.append("src_img", e.target.files[0]);
-        let res1 = await uploadImageSwap(formData, "nu");
-        setLink1(res1);
-        const imgURL = URL.createObjectURL(e.target.files[0]).toString();
-        setPicOne(imgURL);
+      const file: File = e.target.files[0];
+      const formData = new FormData();
+      // const data
+      if (file && e.target.files[0]) {
+        formData.append("src_img", file);
+        axios
+          .post(
+            `https://databaseswap.mangasocial.online/upload-gensk/${userId}?type=src_nu`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+            setLink1(res.data);
+          });
       }
+      setPicOne(URL.createObjectURL(e.target.files[0]));
     }
   };
   const handleSwapFace = async () => {
@@ -112,11 +125,14 @@ function SwapVideo() {
       setLinkSwapVideo("");
       setPecent(0);
       //   console.log("Click Swap");
+      // console.log(link1);
+      // debugger
       if (params.id !== undefined) {
         const res = await swapVideoVersion2(link1, +params.id);
         console.log(res);
         if (res) {
-          setLinkSwapVideo(res.sukien_video.link_vid_da_swap);
+          // setLinkSwapVideo(res.sukien_video.link_vid_da_swap);
+          console.log(res);
         }
       }
       setLoading(false);
@@ -161,7 +177,6 @@ function SwapVideo() {
 
     return () => clearInterval(interval);
   }, []);
-  console.log(link1);
   return (
     <>
       <div className={cx("wrapper")}>

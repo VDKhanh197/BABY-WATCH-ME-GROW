@@ -104,37 +104,33 @@ function NewBorn() {
     pic: number
   ) => {
     setUpLoadFace(false);
-
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
-
-      if (pic === 1) {
-        const formData = new FormData();
-        formData.append("src_img", e.target.files[0]);
-        let res1 = await uploadImageSwap(formData, "nu");
-        setLink1(res1);
-        setPicOne(URL.createObjectURL(e.target.files[0]));
+      const file: File = e.target.files[0];
+      const formData = new FormData();
+      // const data
+      if (file && e.target.files[0]) {
+        formData.append("src_img", file);
+        axios
+          .post(
+            `https://databaseswap.mangasocial.online/upload-gensk/${userId}?type=src_nu`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+            pic === 1 ? setLink1(res.data) : setLink2(res.data);
+          });
       }
-      console.log("here");
-
-      if (pic === 2) {
-        const formData = new FormData();
-        formData.append("src_img", e.target.files[0]);
-        let res2 = await uploadImageSwap(formData, "nam");
-        setLink2(res2);
-        // console.log("here");
-        setPicTwo(URL.createObjectURL(e.target.files[0]));
-      }
-      if (pic === 3) {
-        // const formData = new FormData();
-        // formData.append("src_img", e.target.files[0]);
-        // let res2 = await uploadImageSwap(formData, 241, "nam");
-        // setLink2(res2);
-        // console.log("here");
-        setLink2(e.target.files[0]);
-        setPicTwo(URL.createObjectURL(e.target.files[0]));
-      }
+      pic === 1
+        ? setPicOne(URL.createObjectURL(e.target.files[0]))
+        : setPicTwo(URL.createObjectURL(e.target.files[0]));
     }
   };
 

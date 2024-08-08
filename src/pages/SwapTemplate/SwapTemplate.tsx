@@ -6,58 +6,62 @@ import { videoTemplate } from "../../services/image";
 import ReactPaginate from "react-paginate";
 import Header from "../../components/Header";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 const cx = classNames.bind(styles);
 
+
 function SwapTemplate() {
-  const [page, setPage] = useState(0);
+  const [numPage, setNumPage] = useState(0);
   const [data, setData] = useState([]);
-  const [pageData, setPageData] = useState([]);
+  const [pageData, setPageData] = useState();
 
   const [maxPage, setMaxPage] = useState(0);
 
   const param = useParams();
   const type = param?.type || "";
+  const currentPage = param.page;
+
+  const navi = useNavigate();
 
   const handleChangePage = (selected: number) => {
-    if (selected + 1 === maxPage) {
-      setPageData(data.slice((selected + 1) * 10 - 10, data.length));
-    } else {
-      setPageData(data.slice((selected + 1) * 10 - 10, (selected + 1) * 10));
-    }
-    setPage(selected);
+    navi(`/template/${type}/${selected+1}`);
   };
   useEffect(() => {
     async function fectchData() {
       if (type === "tm") {
         const res = await axios.get(
-          "https://api.watchmegrow.online/get/list_video/time_machine_temp"
+          `https://api.watchmegrow.online/get/list_video/time_machine_temp?page=${currentPage}`
         );
-        setData(res.data.list_sukien_video);
+        setData(res.data.data);
+        setNumPage(res.data.total_page);
       } else if (type === "d&m") {
         const res = await axios.get(
-          "https://api.watchmegrow.online/get/list_video/all_video_baby_mom"
+          `https://api.watchmegrow.online/get/list_video/all_video_baby_mom?page=${currentPage}`
         );
-        setData(res.data.list_sukien_video);
+        setData(res.data.data);
+        setNumPage(res.data.total_page);
+
       } else if (type === "k&m") {
         const res = await axios.get(
-          "https://api.watchmegrow.online/get/list_image/mom_baby_temp"
+          `https://api.watchmegrow.online/get/list_image/mom_baby_temp?page=${currentPage}`
         );
-        setData(res.data);;
+        setData(res.data.data);;
+        setNumPage(res.data.total_page);
+
       }
     }
 
     fectchData();
-  }, []);
-  useEffect(() => {
-    async function setFirstPage() {
-      setPageData(data.slice(0, 10));
-      setMaxPage(Math.ceil(data.length / 10));
-    }
-    setFirstPage();
-  }, [data]);
-  console.log(data.length);
-
+  }, [currentPage]);
+  // useEffect(() => {
+  //   async function setFirstPage() {
+  //     setPageData(data.slice(0, 10));
+  //     setMaxPage(Math.ceil(data.length / 10));
+  //   }
+  //   setFirstPage();
+  // }, [data]);
+  // console.log(data.length);
+  console.log(data);
   return (
     <div className={cx("back")}>
       <Header />
@@ -66,11 +70,11 @@ function SwapTemplate() {
           <span>Choose Your Template</span>
         </div>
         <div className={cx("main")}>
-          {pageData.length > 0 &&
-            pageData.map((item, index) => {
+          {data &&
+            data.map((item, index) => {
               // console.log(item?.image);
               return (
-                <TemplateCard key={index} index={index} type={type} data={item} />
+                <TemplateCard key={index} type={type} data={item} />
               )
             })}
         </div>
@@ -80,7 +84,7 @@ function SwapTemplate() {
             nextLabel=">"
             onPageChange={(selected) => handleChangePage(selected.selected)}
             pageRangeDisplayed={4}
-            pageCount={maxPage}
+            pageCount={numPage}
             previousLabel="<"
             renderOnZeroPageCount={null}
             pageClassName={cx("page")}

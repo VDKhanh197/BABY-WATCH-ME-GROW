@@ -36,8 +36,16 @@ try {
 }
 const userId = localStorage.getItem('userId');
 
-export const uploadImageSwap = (formData: any, gender: string) =>
-  apiAuth.post(`/upload-gensk/${userId}?type=src_${gender}`, formData);
+export const uploadImageSwap = (formData: any, gender: string) =>{
+  console.log(userId);
+  apiAuth.post(`/upload-gensk/${userId}?type=src_${gender}`,{
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': `Bearer ${token}`,
+    }
+  }, formData);
+
+}
 
 export const swapImage = async (link1: string, link2: string) => {
   console.log(link1, link2);
@@ -77,6 +85,7 @@ export const swapVideoVersion2 = async (
   link1: string,
   link2: number | undefined
 ) => {
+  console.log(userId, link1, link2);
   let config = {
     headers: {
       Authorization: `Bearer ${token}`,

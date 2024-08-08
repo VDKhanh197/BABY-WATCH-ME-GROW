@@ -13,11 +13,10 @@ interface TemplateCardProps {
     id_cate: string | "";
   };
   type: string;
-  index: number;
 }
 const cx = classNames.bind(styles);
 
-const TemplateCard: FC<TemplateCardProps> = ({ data, type, index }) => {
+const TemplateCard: FC<TemplateCardProps> = ({ data, type }) => {
   const [isSound, setIsSound] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const video1 = useRef<HTMLVideoElement>(null);

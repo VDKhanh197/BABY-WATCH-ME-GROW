@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
-import styles from "./Profile.module.scss";
+import styles from "./Share.module.scss";
 import { CloudLeft, CloudRight } from "../../assets/icon";
 import { BearIcon } from "../../assets/svg/bear";
 import { Pink_1, Pink_2 } from "../../assets/svg/pinkCloud";
@@ -43,8 +43,6 @@ export default function Profile() {
     device_register: "",
   });
 
-  const userId = localStorage.getItem("userId");
-  const token = localStorage.getItem("accessToken");
   const [avt, setAvt] = useState(user.link_avatar);
   const [isEdit, setIsEdit] = useState(false);
   const [listTemp, setListTemp] = useState<listItemType[] | []>([
@@ -68,43 +66,10 @@ export default function Profile() {
     setType(e.target.value);
   };
 
-  const handleChangeAvt = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
-      const formData = new FormData();
-      formData.append("src_img", e.target.files[0]);
-      let res1 = await uploadImageSwap(formData, "nu");
-      axios
-        .post(
-          `https://databaseswap.mangasocial.online/changeavatar/${userId}/upload`,
-          {
-            link_img: res1,
-            check_img: "upload",
-          },
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        )
-        .then((res) => {
-          // setAvt(res.data);
-          console.log(res.data);
-          alert("Update avatar successfully!");
-        });
-    }
-  };
-
   useEffect(() => {
     //@ts-ignore
     axios
-      .get(`https://databaseswap.mangasocial.online/profile/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get(`https://databaseswap.mangasocial.online/profile/${id}`)
       .then((res) => {
         setUser(res.data);
       })
@@ -118,7 +83,7 @@ export default function Profile() {
             )
           : setAvt(user.link_avatar);
       });
-  }, [user]);
+  }, []);
   useEffect(() => {
     if (type === "Event") {
       axios
@@ -158,28 +123,6 @@ export default function Profile() {
         });
     }
   }, [type]);
-  useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem("user") || "").id_user;
-    const fecthData = async () => {
-      const { data } = await axios.get(
-        `https://databaseswap.mangasocial.online/lovehistory/pageComment/${countCM}?id_user=${userId}`
-      );
-      setListCmt(data.comment);
-      console.log(data.comment);
-    };
-    fecthData();
-  }, []);
-  //   const [currentUser, setCurrentUser] = useState({
-  //     id_user: "",
-  //     link_avatar: "",
-  //     ip_register: "",
-  //   });
-  //   useEffect(() => {
-  //     if (localStorage.getItem("user")) {
-  //       setCurrentUser(JSON.parse(localStorage.getItem("user") || ""));
-  //     }
-  //   }, []);
-  // console.log(listCmt);
 
   return (
     <>
@@ -188,7 +131,6 @@ export default function Profile() {
           <Heart />
         </div>
         <div className={cx("body")}>
-          <Header />
           <div className={cx("container")}>
             <div className={cx("banner")}>
               <div className={cx("avatar")}>
@@ -202,58 +144,6 @@ export default function Profile() {
                     <span>Upload image</span>
                   </label>
                 )}
-                <input
-                  type="file"
-                  id="avt"
-                  hidden={true}
-                  onChange={(e) => {
-                    handleChangeAvt(e);
-                  }}
-                />
-              </div>
-
-              {/* <div className={cx("background")}>
-                <label htmlFor="backgd">
-                  <img src={images.camera} alt="" />
-                  <span>Change cover</span>
-                </label>
-                <input type="file" id="backgd" hidden={true} />
-              </div> */}
-            </div>
-
-            <div className={cx("info")}>
-              <div className={cx("line1")}>
-                <strong>
-                  {user.user_name ? user.user_name : "@trung hieu"}
-                </strong>
-                <div className={cx("btn-edit")}>
-                  <span
-                    onClick={() => {
-                      setIsEdit(true);
-                    }}
-                  >
-                    Edit profile
-                  </span>
-                  <img
-                    src={images.setting}
-                    alt=""
-                    onClick={() => {
-                      navi(`/setting/${user.id_user}`);
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className={cx("line2")}>
-                <span>
-                  <strong>{user.count_sukien}</strong> events
-                </span>
-                <span>
-                  <strong>{user.count_view}</strong> views
-                </span>
-                <span>
-                  <strong>{user.count_comment}</strong> comments
-                </span>
               </div>
             </div>
 
@@ -271,31 +161,19 @@ export default function Profile() {
                       //   console.log(item);
                       if (type === "Event") {
                         return (
-                          <div
-                            className={cx("vid")}
-                            key={index}
-                            onClick={() => {
-                              navi(`/share/${userId}`);
-                            }}
-                          >
+                          <div className={cx("vid")} key={index}>
                             <video src={item.link_video_da_swap} controls />
                           </div>
                         );
                       } else {
                         return (
-                          <div
-                            className={cx("vid")}
-                            key={index}
-                            onClick={() => {
-                              navi(`/share/${userId}`);
-                            }}
-                          >
+                          <div className={cx("vid")} key={index}>
                             <img
                               src={item.link_da_swap}
                               alt=""
                               onClick={() => {
-                                setIsOpenDetailImg(true);
                                 setUrlImgDetail(item.link_da_swap);
+                                setIsOpenDetailImg(true);
                               }}
                             />
                           </div>
@@ -334,48 +212,6 @@ export default function Profile() {
           <Pink_2 />
         </div>
       </div>
-      {isEdit && (
-        <div className={cx("edit")}>
-          <form action="">
-            <div className={cx("title")}>
-              <h1>Profile</h1>
-              <img
-                src={images.icClose}
-                alt=""
-                onClick={() => {
-                  setIsEdit(false);
-                }}
-              />
-            </div>
-
-            <div className={cx("form")}>
-              {user.link_avatar ? (
-                <label htmlFor="avt">
-                  <img src={avt} className={cx("imgAvt")} alt="" />
-                </label>
-              ) : (
-                <label htmlFor="avt">
-                  <img src={images.camera} alt="" />
-                  <span>Upload image</span>
-                </label>
-              )}
-              <div className={cx("form-content")}>
-                <input type="text" placeholder="@hieu" />
-                <div className={cx("btn")}>
-                  <label htmlFor="avt">Upload image</label>
-                  <span
-                    onClick={() => {
-                      setIsEdit(false);
-                    }}
-                  >
-                    Save
-                  </span>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      )}
       {isOpenDetailImg && (
         <DetailImg
           handleClick={(isOpen) => handleOpenDetail(isOpen)}
