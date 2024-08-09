@@ -100,7 +100,7 @@ function Swap() {
   const handleChooseImg = async (src: string, isLeftIn: boolean) => {
     setUpLoadFace(false);
     const str = `/var/www/build_futurelove/${src.replace(
-      "https://futurelove.online/",
+      "https://photo.gachmen.org/",
       ""
     )}`;
     if (isLeftIn) {
@@ -137,13 +137,19 @@ function Swap() {
             }
           )
           .then((res) => {
-            console.log(res.data);
+            console.log(res);
+            if (res.data.message) {
+              alert(res.data.message);
+              return;
+            }
             pic === 1 ? setLink1(res.data) : setLink2(res.data);
           });
+        if (link1 || link2) {
+          pic === 1
+            ? setPicOne(URL.createObjectURL(e.target.files[0]))
+            : setPicTwo(URL.createObjectURL(e.target.files[0]));
+        }
       }
-      pic === 1
-        ? setPicOne(URL.createObjectURL(e.target.files[0]))
-        : setPicTwo(URL.createObjectURL(e.target.files[0]));
     }
   };
   const handleSwapFace = async () => {
@@ -302,14 +308,17 @@ function Swap() {
                 {imageHistory &&
                   imageHistory.length > 0 &&
                   imageHistory.map((item, index) => {
+                    const string = item.toString();
+                    const src = string.replace(
+                      "futurelove.online",
+                      "photo.gachmen.org"
+                    );
                     return (
                       <img
-                        src={item.toString()}
+                        src={src}
                         alt=""
                         key={index}
-                        onClick={() =>
-                          handleChooseImg(item.toString(), isLeftIn)
-                        }
+                        onClick={() => handleChooseImg(src, isLeftIn)}
                       />
                     );
                   })}

@@ -78,7 +78,7 @@ function SwapVideo() {
     setPicOne(src);
     setUpLoadFace(false);
     const str = `/var/www/build_futurelove/${src.replace(
-      "https://futurelove.online/",
+      "https://photo.gachmen.org/",
       ""
     )}`;
     setLink1(str);
@@ -113,10 +113,16 @@ function SwapVideo() {
           )
           .then((res) => {
             console.log(res.data);
+            if (res.data.message) {
+              alert(res.data.message);
+              return;
+            }
             setLink1(res.data);
           });
+        if (link1) {
+          setPicOne(URL.createObjectURL(e.target.files[0]));
+        }
       }
-      setPicOne(URL.createObjectURL(e.target.files[0]));
     }
   };
   const handleSwapFace = async () => {
@@ -268,12 +274,17 @@ function SwapVideo() {
                 {imageHistory &&
                   imageHistory.length > 0 &&
                   imageHistory.map((item, index) => {
+                    const string = item.toString();
+                    const src = string.replace(
+                      "futurelove.online",
+                      "photo.gachmen.org"
+                    );
                     return (
                       <img
-                        src={item.toString()}
+                        src={src}
                         alt=""
                         key={index}
-                        onClick={() => handleChooseImg(item.toString())}
+                        onClick={() => handleChooseImg(src)}
                       />
                     );
                   })}

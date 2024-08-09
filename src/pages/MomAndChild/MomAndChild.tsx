@@ -67,7 +67,7 @@ export default function MomAndChild() {
   const handleChooseImg = async (src: string) => {
     setUpLoadFace(false);
     const str = `/var/www/build_futurelove/${src.replace(
-      "https://futurelove.online/",
+      "https://photo.gachmen.org/",
       ""
     )}`;
     setPreview1(src);
@@ -117,12 +117,18 @@ export default function MomAndChild() {
           )
           .then((res) => {
             console.log(res.data);
+            if (res.data.message) {
+              alert(res.data.message);
+              return;
+            }
             pic === 1 ? setLink1(res.data) : setLink2(res.data);
           });
+        if (link1) {
+          pic === 1
+            ? setPreview1(URL.createObjectURL(e.target.files[0]))
+            : setPreview2(URL.createObjectURL(e.target.files[0]));
+        }
       }
-      pic === 1
-        ? setPreview1(URL.createObjectURL(e.target.files[0]))
-        : setPreview2(URL.createObjectURL(e.target.files[0]));
     }
   };
 
@@ -373,13 +379,17 @@ export default function MomAndChild() {
                 {imageHistory &&
                   imageHistory.length > 0 &&
                   imageHistory.map((item, index) => {
-                    console.log(item);
+                    const string = item.toString();
+                    const src = string.replace(
+                      "futurelove.online",
+                      "photo.gachmen.org"
+                    );
                     return (
                       <img
-                        src={item.toString()}
+                        src={src}
                         alt=""
                         key={index}
-                        onClick={() => handleChooseImg(item.toString())}
+                        onClick={() => handleChooseImg(src)}
                       />
                     );
                   })}
