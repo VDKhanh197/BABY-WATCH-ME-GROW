@@ -58,6 +58,11 @@
             cursor: pointer;
           }
         }
+        & img {
+          width: 160px;
+          height: 160px;
+          object-fit: cover;
+        }
       }
 
     }
@@ -220,7 +225,7 @@
         flex-direction: row;
         border-radius: 8px;
         gap: 8px;
-        & img {
+      & img {
           width: 160px;
           height: 160px;
           object-fit: cover;

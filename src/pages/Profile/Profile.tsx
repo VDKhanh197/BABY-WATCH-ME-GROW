@@ -190,7 +190,7 @@ export default function Profile() {
                 {user.link_avatar ? (
                   <label htmlFor="" onClick={() => setIsEdit(true)}>
                     <img
-                      src={user.link_avatar}
+                      src={user.link_avatar.replace("futurelove.online","photo.gachmen.org")}
                       className={cx("imgAvt")}
                       alt=""
                     />
@@ -268,7 +268,13 @@ export default function Profile() {
                   {listTemp &&
                     listTemp.map((item, index) => {
                       //   console.log(item);
+
                       if (type === "Event") {
+                        const string = item.link_video_da_swap;
+                        const src = string.replace(
+                          "futurelove.online",
+                          "photo.gachmen.org"
+                        );
                         return (
                           <div
                             className={cx("vid")}
@@ -277,10 +283,17 @@ export default function Profile() {
                               navi(`/share/${userId}`);
                             }}
                           >
-                            <video src={item.link_video_da_swap} controls />
+                            <video src={src} controls />
                           </div>
                         );
                       } else {
+                        const string = item.link_da_swap;
+                        const src = string?.replace(
+                          "futurelove.online",
+                          "photo.gachmen.org"
+                        ) as string;
+                        console.log(src);
+                        // console.log(typeof item.link_da_swap);
                         return (
                           <div
                             className={cx("vid")}
@@ -290,11 +303,11 @@ export default function Profile() {
                             }}
                           >
                             <img
-                              src={item.link_da_swap}
+                              src={src}
                               alt=""
                               onClick={() => {
                                 setIsOpenDetailImg(true);
-                                setUrlImgDetail(item.link_da_swap);
+                                setUrlImgDetail(src);
                               }}
                             />
                           </div>

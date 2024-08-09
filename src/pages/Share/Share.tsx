@@ -72,7 +72,7 @@ export default function Profile() {
       .get(`https://databaseswap.mangasocial.online/profile/${id}`)
       .then((res) => {
         setUser(res.data);
-      })
+      });
   }, []);
   useEffect(() => {
     if (type === "Event") {
@@ -121,14 +121,14 @@ export default function Profile() {
           <Heart />
         </div>
         <div className={cx("body")}>
-            {localStorage.getItem("accessToken")&& <Header/>}
+          {localStorage.getItem("accessToken") && <Header />}
           <div className={cx("container")}>
             <div className={cx("banner")}>
               <div className={cx("avatar")}>
                 {user.link_avatar ? (
                   <label htmlFor="avt">
                     <img
-                      src={user.link_avatar}
+                      src={user.link_avatar.replace("futurelove.online","photo.gachmen.org")}
                       className={cx("imgAvt")}
                       alt=""
                       onClick={() => {
@@ -162,19 +162,29 @@ export default function Profile() {
                     listTemp.map((item, index) => {
                       //   console.log(item);
                       if (type === "Event") {
+                        const string = item.link_video_da_swap;
+                        const src = string.replace(
+                          "futurelove.online",
+                          "photo.gachmen.org"
+                        );
                         return (
                           <div className={cx("vid")} key={index}>
-                            <video src={item.link_video_da_swap} controls />
+                            <video src={src} controls />
                           </div>
                         );
                       } else {
+                        const string = item.link_da_swap;
+                        const src = string?.replace(
+                          "futurelove.online",
+                          "photo.gachmen.org"
+                        ) as string;
                         return (
                           <div className={cx("vid")} key={index}>
                             <img
-                              src={item.link_da_swap}
+                              src={src}
                               alt=""
                               onClick={() => {
-                                setUrlImgDetail(item.link_da_swap);
+                                setUrlImgDetail(src);
                                 setIsOpenDetailImg(true);
                               }}
                             />

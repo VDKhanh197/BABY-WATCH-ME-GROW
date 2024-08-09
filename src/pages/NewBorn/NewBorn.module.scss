@@ -350,6 +350,7 @@
     left: 331px;
     justify-content: space-between;
     & img , .in-pic{
+      object-fit: cover;
       height: 160px;
       width: 160px;
       border-radius: 50%;

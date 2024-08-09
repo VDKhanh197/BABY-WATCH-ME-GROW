@@ -184,7 +184,8 @@ function Swap() {
         }
       );
       if (data) {
-        setLinkSwapImage(data.sukien_baby[0].link_da_swap);
+        const string = data.sukien_baby[0].link_da_swap;
+        setLinkSwapImage(string.replace("futurelove.online","photo.gachmen.org"));
         console.log(data);
       }
     } catch (error) {
@@ -308,6 +309,7 @@ function Swap() {
                 {imageHistory &&
                   imageHistory.length > 0 &&
                   imageHistory.map((item, index) => {
+                    console.log(item);
                     const string = item.toString();
                     const src = string.replace(
                       "futurelove.online",
