@@ -69,7 +69,7 @@ export default function Profile() {
   useEffect(() => {
     //@ts-ignore
     axios
-      .get(`https://databaseswap.mangasocial.online/profile/${id}`)
+      .get(`https://api.funface.online/profile/${id}`)
       .then((res) => {
         setUser(res.data);
       });
@@ -78,7 +78,7 @@ export default function Profile() {
     if (type === "Event") {
       axios
         .get(
-          `https://api.watchmegrow.online/get/list_video/id_user_swap?id_user=${id}`
+          `https://api.funface.online/get/list_video/id_user_swap?id_user=${id}`
         )
         .then((res) => {
           setListTemp(res.data.list_sukien_video);
@@ -87,7 +87,7 @@ export default function Profile() {
     if (type === "Newborn") {
       axios
         .get(
-          `https://api.watchmegrow.online/get/list_image/all_image_swap?type=newborn&id_user=${id}`
+          `https://api.funface.online/list_image/all_image_swap?type=newborn&id_user=${id}`
         )
         .then((res) => {
           console.log(res);
@@ -97,7 +97,7 @@ export default function Profile() {
     if (type === "Generator") {
       axios
         .get(
-          `https://api.watchmegrow.online/get/list_image/all_image_swap_generate?id_user=${id}`
+          `https://api.funface.online/list_image/all_image_swap_generate?id_user=${id}`
         )
         .then((res) => {
           setListTemp(res.data);
@@ -106,7 +106,7 @@ export default function Profile() {
     if (type === "mom") {
       axios
         .get(
-          `https://api.watchmegrow.online/get/list_image/all_image_swap_mom_baby?id_user=${id}&type=mom_and_baby`
+          `https://api.funface.online/list_image/all_image_swap_mom_baby?id_user=${id}&type=mom_and_baby`
         )
         .then((res) => {
           setListTemp(res.data);

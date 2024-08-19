@@ -30,20 +30,20 @@ function SwapTemplate() {
     async function fectchData() {
       if (type === "tm") {
         const res = await axios.get(
-          `https://api.watchmegrow.online/get/list_video/time_machine_temp?page=${currentPage}`
+          `https://api.funface.online/get/list_video/time_machine_temp?page=${currentPage}`
         );
         setData(res.data.data);
         setNumPage(res.data.total_page);
       } else if (type === "d&m") {
         const res = await axios.get(
-          `https://api.watchmegrow.online/get/list_video/all_video_baby_mom?page=${currentPage}`
+          `https://api.funface.online/get/list_video/all_video_baby_mom?page=${currentPage}`
         );
         setData(res.data.data);
         setNumPage(res.data.total_page);
 
       } else if (type === "k&m") {
         const res = await axios.get(
-          `https://api.watchmegrow.online/get/list_image/mom_baby_temp?page=${currentPage}`
+          `https://api.funface.online/list_image/mom_baby_temp?page=${currentPage}`
         );
         setData(res.data.data);;
         setNumPage(res.data.total_page);

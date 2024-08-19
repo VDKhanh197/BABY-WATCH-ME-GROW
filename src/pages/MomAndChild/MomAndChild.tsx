@@ -106,7 +106,7 @@ export default function MomAndChild() {
         formData.append("src_img", file);
         axios
           .post(
-            `https://databaseswap.mangasocial.online/upload-gensk/${userId}?type=src_nu`,
+            `https://api.funface.online/upload-gensk/${userId}?type=src_nu`,
             formData,
             {
               headers: {
@@ -152,7 +152,7 @@ export default function MomAndChild() {
       console.log("Click Swap");
       if (params.id !== undefined) {
         const res = await axios.get(
-          `https://api.watchmegrow.online/getdata/swap/listimage_mom_baby?device_them_su_kien=browser&ip_them_su_kien=1111&id_user=${userId}&list_folder=${params.folderName}`,
+          `https://video.funface.online/getdata/swap/listimage_mom_baby?device_them_su_kien=browser&ip_them_su_kien=1111&id_user=${userId}&list_folder=${params.folderName}`,
           {
             headers: {
               link1: link1,
@@ -174,7 +174,7 @@ export default function MomAndChild() {
   useEffect(() => {
     axios
       .get(
-        `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
+        `https://api.funface.online/images/${userId}?type=video`,
         {
           headers: {
             ContentType: "application/json",
@@ -189,7 +189,7 @@ export default function MomAndChild() {
 
     axios
       .get(
-        `https://api.watchmegrow.online/get/list_image/mom_baby_temp_detail?id=${params.id}`,
+        `https://api.funface.online/list_image/mom_baby_temp_detail?id=${params.id}`,
         {
           headers: {
             ContentType: "application/json",

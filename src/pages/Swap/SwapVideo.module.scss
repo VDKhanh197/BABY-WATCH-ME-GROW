@@ -208,10 +208,15 @@
       border-radius: 8px;
       
       overflow-x: scroll;
-      &::-webkit-scrollbar {
-        width: 0px;
-        background: transparent; // Make the scrollbar transparent
-      }
+      // &::-webkit-scrollbar {
+      //   width: 8px;
+      //   background: transparent; // Make the scrollbar transparent
+      // }
+      // &::-webkit-scrollbar-thumb {
+      //   background-color: linear-gradient(to right, #DA6251, #4F67C4);
+      //   border-radius: 10px; // Optional: add a rounded corner to the thumb
+      //   cursor: pointer;
+      // }
       .list{
         display: flex;
         flex-direction: row;

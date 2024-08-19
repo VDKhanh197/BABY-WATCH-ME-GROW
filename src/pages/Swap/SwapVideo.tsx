@@ -102,7 +102,7 @@ function SwapVideo() {
         formData.append("src_img", file);
         axios
           .post(
-            `https://databaseswap.mangasocial.online/upload-gensk/${userId}?type=src_nu`,
+            `https://api.funface.online/upload-gensk/${userId}?type=src_nu`,
             formData,
             {
               headers: {
@@ -149,7 +149,7 @@ function SwapVideo() {
   useEffect(() => {
     axios
       .get(
-        `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
+        `https://api.funface.online/images/${userId}?type=video`,
         {
           headers: {
             ContentType: "application/json",
@@ -164,7 +164,7 @@ function SwapVideo() {
 
     axios
       .get(
-        `https://api.watchmegrow.online/get/list_video/time_machine_temp_detail?id=${params.id}`,
+        `https://api.funface.online/get/list_video/time_machine_temp_detail?id=${params.id}`,
         {
           headers: {
             ContentType: "application/json",

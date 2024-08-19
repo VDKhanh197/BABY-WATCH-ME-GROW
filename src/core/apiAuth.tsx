@@ -1,6 +1,6 @@
 import axios from "axios";
 const apiAuth = axios.create({
-  baseURL: "https://databaseswap.mangasocial.online",
+  baseURL: "https://api.funface.online",
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': '*',

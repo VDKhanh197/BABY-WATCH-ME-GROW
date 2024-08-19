@@ -127,7 +127,7 @@ function Swap() {
         formData.append("src_img", file);
         axios
           .post(
-            `https://databaseswap.mangasocial.online/upload-gensk/${userId}?type=src_nu`,
+            `https://api.funface.online/upload-gensk/${userId}?type=src_nu`,
             formData,
             {
               headers: {
@@ -168,7 +168,7 @@ function Swap() {
       const browser = window.navigator.userAgent;
       const ip = "unknown";
       const { data } = await axios.get(
-        `https://admin.funface.online/getdata/sukien/baby`,
+        `https://video.funface.online/getdata/sukien/baby`,
         {
           params: {
             device_them_su_kien: browser,
@@ -196,7 +196,7 @@ function Swap() {
   useEffect(() => {
     axios
       .get(
-        `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
+        `https://api.funface.online/images/${userId}?type=video`,
         {
           headers: {
             ContentType: "application/json",

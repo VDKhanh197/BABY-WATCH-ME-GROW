@@ -216,10 +216,10 @@
       border-radius: 8px;
       
       overflow-x: scroll;
-      &::-webkit-scrollbar {
-        width: 0px;
-        background: transparent; // Make the scrollbar transparent
-      }
+      // &::-webkit-scrollbar {
+      //   width: 0px;
+      //   background: transparent; // Make the scrollbar transparent
+      // }
       .list{
         display: flex;
         flex-direction: row;

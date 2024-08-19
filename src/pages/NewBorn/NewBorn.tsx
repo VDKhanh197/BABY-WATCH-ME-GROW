@@ -114,7 +114,7 @@ function NewBorn() {
         formData.append("src_img", file);
         axios
           .post(
-            `https://databaseswap.mangasocial.online/upload-gensk/${userId}?type=src_nu`,
+            `https://api.funface.online/upload-gensk/${userId}?type=src_nu`,
             formData,
             {
               headers: {
@@ -155,7 +155,7 @@ function NewBorn() {
   useEffect(() => {
     axios
       .get(
-        `https://databaseswap.mangasocial.online/images/${userId}?type=video`,
+        `https://api.funface.online/images/${userId}?type=video`,
         {
           headers: {
             ContentType: "application/json",
@@ -192,7 +192,7 @@ function NewBorn() {
         setIsLoading(true);
 
         const { data } = await axios.get(
-          `https://admin.funface.online/getdata/swap/listimage_baby_newborn`,
+          `https://video.funface.online/getdata/swap/listimage_baby_newborn`,
           {
             params: {
               device_them_su_kien: browser,

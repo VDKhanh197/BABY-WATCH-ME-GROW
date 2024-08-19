@@ -1,6 +1,6 @@
 import axios from "axios";
 const apiDb = axios.create({
-  baseURL: "https://databaseswap.mangasocial.online",
+  baseURL: "https://api.funface.online",
 
 
   headers: {
