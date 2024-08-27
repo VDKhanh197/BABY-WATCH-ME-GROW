@@ -392,12 +392,6 @@ export default function Profile() {
           </form>
         </div>
       )}
-      {isOpenDetailImg && (
-        <DetailImg
-          handleClick={(isOpen) => handleOpenDetail(isOpen)}
-          url={urlImgDetail}
-        />
-      )}
     </>
   );
 }

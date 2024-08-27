@@ -50,7 +50,6 @@ function NewBorn() {
   const [isLeftIn, setIsLeftIn] = useState(true);
   const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
   const [isOpenDetailImg, setIsOpenDetailImg] = useState(false);
-  const [urlImgDetail, setUrlImgDetail] = useState("");
 
   const navi = useNavigate();
 
@@ -291,13 +290,12 @@ function NewBorn() {
                             key={index}
                             onClick={() => {
                               setIsOpenDetailImg(true);
-                              setUrlImgDetail(item);
                             }}
                           />
                         );
                       })}
                     </div>
-                    <div className={cx("share")}>
+                    <div className={cx("share")} onClick={()=>navi(`/share/${userId}`)}>
                       <span>Share</span>
                     </div>
                   </div>
@@ -357,7 +355,7 @@ function NewBorn() {
       {isOpenDetailImg && (
         <DetailImg
           handleClick={(isOpen) => handleOpenDetail(isOpen)}
-          url={urlImgDetail}
+          url={linkSwapImage}
         />
       )}
     </>

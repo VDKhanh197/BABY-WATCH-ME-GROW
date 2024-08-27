@@ -161,8 +161,9 @@ export default function Profile() {
                   {listTemp &&
                     listTemp.map((item, index) => {
                       //   console.log(item);
-                      if (type === "Event") {
+                      if (type === "Event" && item.link_video_da_swap) {
                         const string = item.link_video_da_swap;
+                        // console.log(typeof string);
                         const src = string.replace(
                           "futurelove.online",
                           "photo.gachmen.org"
@@ -227,7 +228,7 @@ export default function Profile() {
       {isOpenDetailImg && (
         <DetailImg
           handleClick={(isOpen) => handleOpenDetail(isOpen)}
-          url={urlImgDetail}
+          url={listTemp}
         />
       )}
     </>

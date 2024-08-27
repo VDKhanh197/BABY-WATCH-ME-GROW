@@ -49,7 +49,7 @@ function Swap() {
   const [isLeftIn, setIsLeftIn] = useState(true);
   const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
   const [isOpenDetailImg, setIsOpenDetailImg] = useState(false);
-  const [urlImgDetail, setUrlImgDetail] = useState("");
+  const [urlImgDetail, setUrlImgDetail] = useState<any[]>([]);
 
   const navi = useNavigate();
 
@@ -121,10 +121,12 @@ function Swap() {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
       const file: File = e.target.files[0];
+      console.log("File: " ,file);
       const formData = new FormData();
       // const data
       if (file && e.target.files[0]) {
         formData.append("src_img", file);
+        console.log("Form Data: ", formData);
         axios
           .post(
             `https://api.funface.online/upload-gensk/${userId}?type=src_nu`,
@@ -278,7 +280,7 @@ function Swap() {
                       src={linkSwapImage}
                       alt=""
                       onClick={() => {
-                        setUrlImgDetail(linkSwapImage);
+                        setUrlImgDetail([...urlImgDetail,linkSwapImage]);
                         setIsOpenDetailImg(true);
                       }}
                     />

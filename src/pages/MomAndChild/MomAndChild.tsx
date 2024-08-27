@@ -48,7 +48,7 @@ export default function MomAndChild() {
   const [linkSwapVideo, setLinkSwapVideo] = useState([]);
   const [linkPrevVideo, setLinkPrevVideo] = useState<ImgDetail[]>([]);
   const [currentImg, setCurrentImg] = useState(4);
-  const [pecent, setPecent] = useState(0);
+  const [percent, setPercent] = useState(0);
   const [position, setPosition] = useState(0);
   const [isOpenDetailImg, setIsOpenDetailImg] = useState(false);
   const [urlImgDetail, setUrlImgDetail] = useState("");
@@ -148,7 +148,7 @@ export default function MomAndChild() {
     if (preview1 !== "") {
       setLoading(true);
       setLinkSwapVideo([]);
-      setPecent(0);
+      setPercent(0);
       console.log("Click Swap");
       if (params.id !== undefined) {
         const res = await axios.get(
@@ -203,7 +203,7 @@ export default function MomAndChild() {
       });
 
     const interval = setInterval(() => {
-      setPecent((prev) => {
+      setPercent((prev) => {
         if (prev < 100) {
           return prev + 1;
         } else {
@@ -297,7 +297,7 @@ export default function MomAndChild() {
                 ) : loading ? (
                   <div className={cx("preloader")}>
                     <div className={cx("loading")}>
-                      <span>{pecent}%</span>
+                      <span>{percent}%</span>
                       <div className={cx("pecent")}></div>
                     </div>
                   </div>
@@ -403,7 +403,7 @@ export default function MomAndChild() {
       {isOpenDetailImg && (
         <DetailImg
           handleClick={(isOpen) => handleOpenDetail(isOpen)}
-          url={urlImgDetail}
+          url={linkSwapVideo}
         />
       )}
     </>
