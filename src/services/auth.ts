@@ -12,4 +12,4 @@ export const resetPassword = (formData:any) => apiAuth.post("/reset", formData, 
 
 export const changePassword = (formData:any, id:string | undefined) => apiAuth.post(`/changepassword/${id}`,formData, {
     headers:{'Authorization': `Bearer ${token}`}
-})
+})  

@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router";
 import { AppStore, CHPlay, CopyRight } from "../assets/icon";
 import styles from "../styles/componentsStyles/Footer.module.scss";
 import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 const Footer = () => {
+  const navi = useNavigate();
   return (
     <>
       <div className={cx("wrapper")}>
@@ -11,7 +13,10 @@ const Footer = () => {
           <div className={cx("box")}>
             <span className={cx("title")}>Contact us</span>
             <span className={cx("title")}>Term of Use</span>
-            <span className={cx("title")}>Privacy Policy</span>
+            <span
+              className={cx("title")}
+              onClick={() => navi('/privacy')}
+            >Privacy Policy</span>
           </div>
           <div className={cx("box")}>
             <div className={cx("app")}>
