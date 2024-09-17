@@ -17,20 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import images from "../../assets/images";
 const cx = classNames.bind(styles);
 
-const HomePage = () => {
-  const [checkUser, setCheckUser] = useState(false);
-  const [user, setUser] = useState({ id_user: "", link_avatar: "" });
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    setUser(JSON.parse(String(localStorage.getItem("user"))));
-    if (localStorage.getItem("user")) setCheckUser(true);
-  }, []);
-  const logOut = () => {
-    localStorage.clear();
-    window.location.reload();
-  };
+const PrivacyPolicy = () => {
   return (
     <>
       <div className={cx("wrapper")}>
@@ -188,4 +175,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default PrivacyPolicy;

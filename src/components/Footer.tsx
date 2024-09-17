@@ -11,7 +11,10 @@ const Footer = () => {
       <div className={cx("wrapper")}>
         <div className={cx("content")}>
           <div className={cx("box")}>
-            <span className={cx("title")}>Contact us</span>
+            <span 
+            className={cx("title")}
+            onClick={()=>navi('/contact')}
+            >Contact us</span>
             <span className={cx("title")}>Term of Use</span>
             <span
               className={cx("title")}

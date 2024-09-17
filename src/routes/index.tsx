@@ -11,6 +11,7 @@ import MomAndChild from "../pages/MomAndChild/MomAndChild";
 import MomAndDad from "../pages/MomAndDad/MomAndDad";
 import Share from "../pages/Share/Share";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
+import Contact from "../pages/Contact/Contact";
 
 const Routers = () => {
   // const [, setPrivateId] = useState('')
@@ -30,6 +31,8 @@ const Routers = () => {
         <Route path="/momanddad/:id" element={<MomAndDad />} />
         <Route path="/share/:id" element={<Share />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/contact" element={<Contact />} />
+
 
 
 
