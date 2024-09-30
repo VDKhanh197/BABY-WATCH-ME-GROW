@@ -31,6 +31,7 @@ function LoginComponent() {
     if (page === 1) {
       if (email === "" || password === "") {
         console.log("Empty");
+        alert("Please enter Email and Password");
       } else {
         if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
           const formData = new FormData();
@@ -49,7 +50,7 @@ function LoginComponent() {
               const account = JSON.stringify(response);
               localStorage.setItem("accessToken", response.token);
               localStorage.setItem("user", account);
-              navi(`/profile/${response.id_user}`);
+              navi(`/`);
             }
           } catch (error) {
             console.log(error);
@@ -57,12 +58,16 @@ function LoginComponent() {
           }
         } else {
           console.log("Wrong email");
+          alert("Wrong Email");
         }
       }
     }
     if (page === 2) {
       if (email === "" || password === "" || name === "") {
         console.log("Empty");
+        alert("Please enter Email, Password and Name");
+      } else if (password.length < 8) {
+        alert("Password must be at least 8 characters");
       } else {
         if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
           const newName = email.split("@");
@@ -88,15 +93,18 @@ function LoginComponent() {
             }
           } catch (e) {
             console.log("Something wrong!");
+            alert("Something wrong!");
           }
         } else {
           console.log("Wrong email");
+          alert("Wrong Email");
         }
       }
     }
     if (page === 3) {
       if (email === "") {
         console.log("Empty");
+        alert("Please enter Email");
       } else {
         if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
           const newName = email.split("@");

@@ -144,7 +144,7 @@ export default function MomAndDad() {
     setLoading(true);
     if (params.id !== undefined) {
       const randomLink = Math.random() < 0.5 ? link1 : link2;
-      const res = await swapVideoMomAndDad(randomLink, +params.id);
+      const res = await swapVideoMomAndDad(userId,randomLink, +params.id);
       console.log(res);
       if (res) {
         setLinkSwapVideo(res.sukien_video.link_vid_da_swap);

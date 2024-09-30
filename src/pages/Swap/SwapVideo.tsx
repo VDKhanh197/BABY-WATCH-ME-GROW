@@ -134,7 +134,7 @@ function SwapVideo() {
       // console.log(link1);
       // debugger
       if (params.id !== undefined) {
-        const res = await swapVideoVersion2(link1, +params.id);
+        const res = await swapVideoVersion2(userId, link1, +params.id);
         console.log(res);
         if (res) {
           setLinkSwapVideo(res.sukien_video.link_vid_da_swap);

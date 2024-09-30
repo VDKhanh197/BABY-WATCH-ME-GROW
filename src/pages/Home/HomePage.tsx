@@ -31,6 +31,15 @@ const HomePage = () => {
     localStorage.clear();
     window.location.reload();
   };
+
+  const handleGetStarted = (link:any) => {
+    if (checkUser) {
+      navigate(link);
+    } else {
+      alert("Please login first to get started");
+      navigate("/login");
+    }
+  };
   return (
     <>
       <div className={cx("wrapper")}>
@@ -49,9 +58,9 @@ const HomePage = () => {
                 share them online with our AI baby maker.
               </span>
             </div>
-            <Link to="/swap" className={cx("button")}>
+            <div onClick={() => handleGetStarted("/swap")} className={cx("button")}>
               <span>Get Started</span>
-            </Link>
+            </div>
           </div>
           <div className={cx("right")}>
             <div className={cx("baby")}>
@@ -103,9 +112,9 @@ const HomePage = () => {
                 features. Start to use our baby maker now!
               </span>
             </div>
-            <Link to={"/template/tm/1"} className={cx("button")}>
+            <div onClick={() => handleGetStarted("/template/tm/1")} className={cx("button")}>
               <span>Try Time Machine</span>
-            </Link>
+            </div>
           </div>
         </div>
         <div className={cx("part_3")}>
@@ -135,14 +144,9 @@ const HomePage = () => {
                   swapping tool offers unparalleled realism.
                 </span>
               </div>
-              <div
-                className={cx("button")}
-                onClick={() => {
-                  navigate("newborn");
-                }}
-              >
-                <span>Try News Born</span>
-              </div>
+              <div onClick={() => handleGetStarted("/newborn")} className={cx("button")}>
+              <span>Try New Born</span>
+            </div>
             </div>
           </div>
           <div className={cx("body")}>
@@ -179,7 +183,7 @@ const HomePage = () => {
                 tool offers unparalleled realism.
               </span>
             </div>
-            <div className={cx("button")} onClick={()=>navigate('/template/d&m/1')}>
+            <div className={cx("button")} onClick={()=>handleGetStarted('/template/d&m/1')}>
               <span>Try Dad & Mom</span>
             </div>
           </div>
@@ -222,7 +226,7 @@ const HomePage = () => {
               <img src={images.kam6} alt="" />
             </div>
             <div className={cx("btn")}>
-              <div className={cx("button")} onClick={()=>navigate('/template/k&m/1')}>
+              <div className={cx("button")} onClick={()=>handleGetStarted('/template/k&m/1')}>
                 <span>Try Kid & Mom</span>
               </div>
             </div>

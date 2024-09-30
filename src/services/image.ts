@@ -19,24 +19,9 @@ type User = {
 };
 // const user: User = JSON.parse(localStorage.getItem('user') || "");
 
-try {
-  let user: User | null = null;
-  const userString = localStorage.getItem('user');
-  if (userString) {
-    user = JSON.parse(userString) as User;
-    localStorage.setItem('userId', user.id_user.toString());
-
-  }
 
 
-  // Process the parsed data
-} catch (error) {
-  console.error('Error parsing JSON:', error);
-  // Handle the error, e.g., display an error message to the user
-}
-const userId = localStorage.getItem('userId');
-
-export const uploadImageSwap = (formData: any, gender: string) =>{
+export const uploadImageSwap = (userId: number,formData: any, gender: string) =>{
   console.log(userId);
   apiAuth.post(`/upload-gensk/${userId}?type=src_${gender}`,{
     headers: {
@@ -47,7 +32,7 @@ export const uploadImageSwap = (formData: any, gender: string) =>{
 
 }
 
-export const swapImage = async (link1: string, link2: string) => {
+export const swapImage = async (userId: number,link1: string, link2: string) => {
   console.log(link1, link2);
   let config = {
     headers: {
@@ -62,7 +47,7 @@ export const swapImage = async (link1: string, link2: string) => {
     config
   );
 };
-export const swapVideo = async (link1: string, formData: any) => {
+export const swapVideo = async (userId: number,link1: string, formData: any) => {
   let config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -82,6 +67,7 @@ export const videoTemplate = async () => {
 };
 
 export const swapVideoVersion2 = async (
+  userId: any,
   link1: string,
   link2: number | undefined
 ) => {
@@ -103,6 +89,7 @@ export const swapVideoVersion2 = async (
 };
 
 export const swapVideoMomAndDad = async (
+  userId: any,
   link1: string,
   link2: number | undefined
 ) => {
