@@ -8,6 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu/DropdownMenu";
 const cx = classNames.bind(styles);
 
+const {width} = window.screen;
+
 const Header = () => {
   const [checkUser, setCheckUser] = useState(false);
   const [user, setUser] = useState({ id_user: "", link_avatar: "" });
@@ -35,13 +37,14 @@ const Header = () => {
   useEffect(() => {
     setUser(JSON.parse(String(localStorage.getItem("user"))));
     if (localStorage.getItem("user")) setCheckUser(true);
+    console.log(width)
   }, []);
 
   return (
     <>
       <div className={cx("header")}>
         <div className={cx("logo")}>
-          <Roof />
+          <Roof width={width.toString()}/>
           <Link to="/" className={cx("babyface")}>
             BABYFACE
           </Link>

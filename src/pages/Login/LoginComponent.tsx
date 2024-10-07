@@ -40,10 +40,10 @@ function LoginComponent() {
           try {
             const response: any = await signin(formData);
             const { message } = response;
-            // console.log(response);
+            console.log(response);
 
-            if (message === "Invalid Password!!") {
-              alert("Fail Try Again!");
+            if (message!=='Success Login Account') {
+              alert(message);
               // localStorage.clear();
             } else {
               alert("Login Success");

@@ -11,9 +11,9 @@ const Footer = () => {
       <div className={cx("wrapper")}>
         <div className={cx("content")}>
           <div className={cx("box")}>
-            <span 
-            className={cx("title")}
-            onClick={()=>navi('/contact')}
+            <span
+              className={cx("title")}
+              onClick={() => navi('/contact')}
             >Contact us</span>
             <span className={cx("title")}>Term of Use</span>
             <span
@@ -23,24 +23,28 @@ const Footer = () => {
           </div>
           <div className={cx("box")}>
             <div className={cx("app")}>
-              <div className={cx("child")}>
-                <div className={cx("icon")}>
-                  <CHPlay />
+              <a href="https://play.google.com/store/apps/details?id=com.xuanduy2309.BABYWATCHMEGROWIOS&pli=1">
+                <div className={cx("child")}>
+                  <div className={cx("icon")}>
+                    <CHPlay />
+                  </div>
+                  <div className={cx("text_box")}>
+                    <span>Get it on</span>
+                    <span>Google Play</span>
+                  </div>
                 </div>
-                <div className={cx("text_box")}>
-                  <span>Get it on</span>
-                  <span>Google Play</span>
+              </a>
+              <a href="https://apps.apple.com/us/app/ai-video-generator-dream-face/id6670520822">
+                <div className={cx("child")}>
+                  <div className={cx("icon")}>
+                    <AppStore />
+                  </div>
+                  <div className={cx("text_box")}>
+                    <span>Get it on</span>
+                    <span>App Store</span>
+                  </div>
                 </div>
-              </div>
-              <div className={cx("child")}>
-                <div className={cx("icon")}>
-                  <AppStore />
-                </div>
-                <div className={cx("text_box")}>
-                  <span>Get it on</span>
-                  <span>App Store</span>
-                </div>
-              </div>
+              </a>
             </div>
             <div className={cx("license")}>
               <span>Copyright by Funny face</span>

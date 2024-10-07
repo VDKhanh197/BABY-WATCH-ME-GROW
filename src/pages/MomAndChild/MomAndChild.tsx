@@ -52,6 +52,8 @@ export default function MomAndChild() {
   const [position, setPosition] = useState(0);
   const [isOpenDetailImg, setIsOpenDetailImg] = useState(false);
   const [urlImgDetail, setUrlImgDetail] = useState("");
+  const [timeCoin, setTimeCoin] = useState(0);
+
 
   const navi = useNavigate();
 
@@ -145,12 +147,19 @@ export default function MomAndChild() {
   };
 
   const handleSwapFace = async () => {
+    getTimeCoin();
+    if (timeCoin <= 0) {
+      alert("please get more coin to swap face! you have: " + timeCoin + ", You can get more coin from application in app store or google play store");
+      return;
+    }
     if (preview1 !== "") {
       setLoading(true);
       setLinkSwapVideo([]);
       setPercent(0);
       console.log("Click Swap");
       if (params.id !== undefined) {
+        handleUpdateCoin(userId);
+
         const res = await axios.get(
           `https://video.funface.online/getdata/swap/listimage_mom_baby?device_them_su_kien=browser&ip_them_su_kien=1111&id_user=${userId}&list_folder=${params.folderName}`,
           {
@@ -171,6 +180,45 @@ export default function MomAndChild() {
     }
   };
   //  console.log(params.id);
+
+  const getTimeCoin = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.funface.online/get_coin_inapp/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTimeCoin(response.data.coin_number);
+      console.log(response.data.coin_number);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateCoin = async (userId: any) => {
+    const formData = new FormData();
+    formData.append("user_id", userId);
+    formData.append("coin_number", (timeCoin - 1).toString());
+    try {
+      const response = await axios.post(
+        `https://api.funface.online/buy_coin_inapp`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+
+      );
+      console.log(response.data);
+      setTimeCoin((prev) => prev - 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     axios
       .get(
@@ -215,6 +263,9 @@ export default function MomAndChild() {
 
     return () => clearInterval(interval);
   }, []);
+  useEffect(() => {
+    getTimeCoin();
+  }, [timeCoin]);
   return (
     <>
       <div className={cx("wrapper")}>

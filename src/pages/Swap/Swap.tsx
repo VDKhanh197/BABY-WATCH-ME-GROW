@@ -50,6 +50,7 @@ function Swap() {
   const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
   const [isOpenDetailImg, setIsOpenDetailImg] = useState(false);
   const [urlImgDetail, setUrlImgDetail] = useState<any[]>([]);
+  const [timeCoin, setTimeCoin] = useState(0);
 
   const navi = useNavigate();
 
@@ -126,7 +127,7 @@ function Swap() {
       // const data
       if (file && e.target.files[0]) {
         formData.append("src_img", file);
-        console.log("Form Data: ", formData);
+        // console.log("Form Data: ", formData);
         axios
           .post(
             `https://api.funface.online/upload-gensk/${userId}?type=src_nu`,
@@ -155,6 +156,12 @@ function Swap() {
     }
   };
   const handleSwapFace = async () => {
+    getTimeCoin();
+    if (timeCoin <= 0) {
+      alert("please get more coin to swap face! you have: " + timeCoin+", You can get more coin from application in app store or google play store");
+      return;
+    }
+
     if (
       token == null ||
       token.length === 0 ||
@@ -163,7 +170,10 @@ function Swap() {
     ) {
       alert("Please login");
       navi("/login");
+      return;
     }
+    console.log("Click Swap"+userId);
+    handleUpdateCoin(userId);
     setLoading(true);
     console.log("Click Swap");
     try {
@@ -195,6 +205,45 @@ function Swap() {
     }
   };
 
+  const getTimeCoin = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.funface.online/get_coin_inapp/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTimeCoin(response.data.coin_number);
+      console.log(response.data.coin_number);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateCoin = async (userId: any) => {
+    const formData = new FormData();
+    formData.append("user_id", userId);
+    formData.append("coin_number", (timeCoin-1).toString());
+    try {
+      const response = await axios.post(
+        `https://api.funface.online/buy_coin_inapp`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },  
+        }
+
+      );
+      console.log(response.data);
+      setTimeCoin((prev)=>prev-1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     axios
       .get(
@@ -211,6 +260,9 @@ function Swap() {
         setImageHistory(res.data.image_links_video);
       });
   }, [link1, link2]);
+  useEffect(() => {
+    getTimeCoin();
+  },[timeCoin]);
   return (
     <>
       <div className={cx("wrapper")}>

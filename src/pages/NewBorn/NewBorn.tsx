@@ -50,6 +50,8 @@ function NewBorn() {
   const [isLeftIn, setIsLeftIn] = useState(true);
   const [imageHistory, setImageHistory] = useState<ImageHistory[]>([]);
   const [isOpenDetailImg, setIsOpenDetailImg] = useState(false);
+  const [timeCoin, setTimeCoin] = useState(0);
+
 
   const navi = useNavigate();
 
@@ -183,6 +185,12 @@ function NewBorn() {
 
   const handleSwapFace = async () => {
     console.log("Click Swap");
+    getTimeCoin();
+    if (timeCoin <= 0) {
+      alert("please get more coin to swap face! you have: " + timeCoin+", You can get more coin from application in app store or google play store");
+      return;
+    }
+    handleUpdateCoin(userId);
     if (link1 && link2) {
       setPecent(0);
       const browser = window.navigator.userAgent;
@@ -223,6 +231,47 @@ function NewBorn() {
   };
   // console.log(link1);
   // console.log(link2);
+  const getTimeCoin = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.funface.online/get_coin_inapp/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTimeCoin(response.data.coin_number);
+      console.log(response.data.coin_number);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateCoin = async (userId: any) => {
+    const formData = new FormData();
+    formData.append("user_id", userId);
+    formData.append("coin_number", (timeCoin-1).toString());
+    try {
+      const response = await axios.post(
+        `https://api.funface.online/buy_coin_inapp`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },  
+        }
+
+      );
+      console.log(response.data);
+      setTimeCoin((prev)=>prev-1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getTimeCoin();
+  },[timeCoin]);
   return (
     <>
       <div className={cx("wrapper")}>

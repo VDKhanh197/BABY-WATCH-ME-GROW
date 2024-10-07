@@ -51,6 +51,8 @@ function SwapVideo() {
 
   const [linkSwapVideo, setLinkSwapVideo] = useState("");
   const [pecent, setPecent] = useState(0);
+  const [timeCoin, setTimeCoin] = useState(0);
+
 
   const navi = useNavigate();
   const params = useParams();
@@ -126,6 +128,11 @@ function SwapVideo() {
     }
   };
   const handleSwapFace = async () => {
+    getTimeCoin();
+    if (timeCoin <= 0) {
+      alert("please get more coin to swap face! you have: " + timeCoin+", You can get more coin from application in app store or google play store");
+      return;
+    }
     if (picOne !== "") {
       setLoading(true);
       setLinkSwapVideo("");
@@ -134,6 +141,7 @@ function SwapVideo() {
       // console.log(link1);
       // debugger
       if (params.id !== undefined) {
+        handleUpdateCoin(userId);
         const res = await swapVideoVersion2(userId, link1, +params.id);
         console.log(res);
         if (res) {
@@ -144,6 +152,44 @@ function SwapVideo() {
       // setLoading(false);
     } else {
       alert("input an image");
+    }
+  };
+  const getTimeCoin = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.funface.online/get_coin_inapp/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTimeCoin(response.data.coin_number);
+      console.log(response.data.coin_number);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateCoin = async (userId: any) => {
+    const formData = new FormData();
+    formData.append("user_id", userId);
+    formData.append("coin_number", (timeCoin-1).toString());
+    try {
+      const response = await axios.post(
+        `https://api.funface.online/buy_coin_inapp`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },  
+        }
+
+      );
+      console.log(response.data);
+      setTimeCoin((prev)=>prev-1);
+    } catch (error) {
+      console.log(error);
     }
   };
   useEffect(() => {
@@ -190,6 +236,9 @@ function SwapVideo() {
 
     return () => clearInterval(interval);
   }, []);
+  useEffect(() => {
+    getTimeCoin();
+  },[timeCoin]);
   return (
     <>
       <div className={cx("wrapper")}>
